@@ -1,0 +1,2363 @@
+\documentclass[11pt,a4paper,openright,oneside]{book}
+\usepackage[english]{babel}
+
+\usepackage{listings}
+\usepackage{amsfonts, amsmath, amssymb,latexsym,amsthm, mathrsfs, enumerate}
+
+\usepackage[usenames]{color}
+
+\parskip=5pt
+\parindent=15pt
+\usepackage[margin=1.2in]{geometry}
+
+\usepackage{hyperref}
+
+\setcounter{tocdepth}{3}
+
+\newenvironment{exs}
+{
+  \setlength{\parindent}{0cm}
+  \large \textbf{Examples:} \normalsize
+}
+{}
+\newenvironment{ex}
+{
+  \setlength{\parindent}{0cm}
+  \large \textbf{Example:} \normalsize 
+}
+{}
+
+\title{\Huge CodeSheet Manual}
+\author{by Jos\'e Luis Dorado Ladera \thanks{odarod86j@gmail.com} }
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\chapter{The sheet}
+
+\section{Extensions and folders}
+
+\begin{itemize}
+\item
+Save your CodeSheet documents with the extension \textit{.csheet} and your tables with the extension \textsf{.ctable}. 
+CodeSheet software will ignore other documents. 
+\item
+You can organize your documents using subfolders if you want. 
+\item
+To open your sheet, select the root folder which contains the files of your character.
+\end{itemize}
+
+\section{Attributes}
+
+\begin{itemize}
+\item
+An attribute is a numerical variable of your character. 
+\item
+We set the value of an attribute using declarations.
+\item
+We strongly recommend using only letters of the alphabet and the \textsf{\_} character for the attributes' names. You can also use numbers at the end. For example, \textsf{attribute1} or \textsf{attribute2}. In any case, the first letter of the attribute MUST be a letter of the alphabet. An attribute name can NOT have spaces.
+\end{itemize}
+
+\subsection{Declarations}
+
+\begin{itemize}
+\item
+An attribute declaration is one line of a .csheet document with a specific syntax. It is used to modify the value of an attribute. We also use declarations in macros, this declarations are called non-attribute declarations.
+\item
+An attribute declaration has two parts. The first part provides the name of the attribute you want to modify. 
+The second part is the modification and consists of a set of parameters.
+\item
+The two parts of an attribute declaration are divided by the `\textsf{:}' character. 
+\item
+It is NOT possible to write two or more attribute declarations in only one line. One attribute declaration by line.
+\item
+Sometimes we use the expression `declaration' to refer only to the mentioned second part, i.e., the expression after the `\textsf{:}' character. In this case is a non-attribute declaration and is usually used in macros.
+\end{itemize}
+
+\begin{exs}
+\begin{itemize}
+  \item \textsf{strenght: 29 + 5 + 7}
+  \item \textsf{dex: 29 + dex\_enhancement - dex\_penalties}
+  \item \textsf{wisdom\_bonus: \textbackslash table(wisdom, table\_abilitymodifiers) - wisdom\_bonus\_penalties}
+\end{itemize}
+\end{exs}
+Suppose that we have the following declarations:
+\begin{itemize}
+  \item \textsf{attribute1: 5}
+  \item \textsf{attribute2: attribute1 + 2}
+  \item \textsf{attribute3: 3}
+  \item \textsf{attribute4: attribute2 + attribute3}
+\end{itemize}
+then the values of these attributes are:
+\begin{itemize}
+  \item \textsf{attribute1 = 5}
+  \item \textsf{attribute2 = 7}
+  \item \textsf{attribute3 = 3}
+  \item \textsf{attribute4 = 10}
+\end{itemize}
+
+\subsubsection{Bucles of declarations}
+
+You should take care because you can make a bucle. In this case, you will not be able to use the attributes in the bucle. For example, the next declarations make a bucle:
+\begin{itemize}
+  \item \textsf{attribute1: attribute2}
+  \item \textsf{attribute2: attribute3}
+  \item \textsf{attribute3: attribute1}
+\end{itemize}
+
+\subsubsection{Multiple declarations of an attribute}
+
+We can have more than one declaration of an attribute. In this case, the value of each declaration is added to calculate the final value of the attribute. This declarations of the same attribute could be in different \textit{.csheet} files.
+
+\begin{exs}
+if we have the next declarations:
+\begin{itemize}
+  \item \textsf{attribute1: attribute2 + 5}
+  \item \textsf{attribute1: 3 + 4}
+  \item \textsf{attribute1: attribute2}
+  \item \textsf{attribute2: 2}
+\end{itemize}
+then the value of the \textsf{attribute1} is \textsf{16}.
+\end{exs}
+However, this behavior can be changed using the parameters \textsf{\textbackslash min()} and \textsf{\textbackslash max()}.
+
+You can find more information in the \textbf{Parameters} chapter.
+
+\section{Tables}
+You can think that a table is as a function. The table gets an $input$ and generates an $output$. To use a table you need to call this table as a parameter.
+
+\begin{ex}
+  \textsf{baseAttack : \textbackslash table(level , baseAttackMedium)} \\
+  In this example, the attribute \textsf{baseAttack} is equal to the $output$ of the \textsf{baseAttackMedium} table according to the \textsf{level} $input$.
+\end{ex}
+
+You can find more information in the \textbf{Parameters} chapter.
+
+\section{Macros}
+A macro is a set of instructions. With each instruction you make one action with the software \textsf{CodeSheet}. You can create variables, call this variables or attributes of your sheet, print something in the display, execute another macro, use the elemental structures of a programing language such as \textsf{if, for, while} or \textsf{arrays}, enable and disable \textit{.csheet} files, and much more.
+
+You can find more information in the \textbf{Macros} chapter.
+
+\section{Enable and disable \textit{.csheet} files}
+
+A \textit{.csheet} file can be enabled or disabled. If a \textit{.csheet} file is disabled, then the declarations and macro codes declared in this file are not effective.
+
+\begin{ex} Suppose that we have this three files: 
+
+\hrulefill
+
+\begin{center}\textit{base.csheet} \end{center}
+  \begin{lstlisting}
+level: 2
+STR: 18
+STRbonus: (STR-10)/t:2
+baseAttack: level
+  \end{lstlisting}  
+
+\hrulefill
+
+\begin{center} \textit{sword2.csheet} \end{center}
+  \begin{lstlisting}
+STR: 2
+swordAttack: baseAttack + STRbonus + 2
+swordDamage: 2d6 + STRbonus + 2
+\MACRO: swordAtt
+  ?swordAttack
+  ?swordDamage
+\ENDMACRO
+  \end{lstlisting}  
+
+\hrulefill
+
+\begin{center} \textit{strengthBeltPlus4.csheet} \end{center}
+  \begin{lstlisting}
+STR: 4
+  \end{lstlisting}  
+
+\hrulefill
+
+then the values of the attributes and the macro actions are:
+\begin{table}[!ht]
+\scriptsize
+\begin{tabular}{|l|l|l|l|}
+\hline
+ variables$\downarrow$ / enabled files$\rightarrow$ & \textbf{ only \textit{base.csheet}} & \textbf{ \textit{base.csheet} and \textit{sword.csheet}} & \textbf{ All are enabled }\\ \hline
+ \textbf{level          } & 2  & 2  & 2  \\ \hline
+ \textbf{STR            } & 18 & 20 & 24  \\ \hline
+ \textbf{STRbonus       } & 4  & 5  & 7  \\ \hline
+ \textbf{baseAttack     } & 2  & 2  & 2 \\ \hline
+ \textbf{swordAttack    } & 0  & 9  & 11 \\ \hline
+ \textbf{swordDamage    } & 0  & 2d6+7 & 2d6+9 \\ \hline
+ \textbf{swordAtt action} & nothing happens & show attribute tables  & show attribute tables  \\ \hline
+\end{tabular}
+\end{table}
+\end{ex}
+
+Read the next chapters to understand the details.
+
+\subsection{\small \textsf{\textbackslash ALWAYS ENABLED}}
+
+You can force a file to be always enabled. The file will always remain enabled even though the user executes a command to disable it. To do that you must include this line in the file:
+\begin{center} \textsf{\textbackslash ALWAYS ENABLED} \end{center}
+
+This line can not be inside a macro's declaration.
+
+
+\section{Comment lines}
+
+You can add comment lines in your \textit{.csheet} files. If a line starts with the character \textsf{\#}, then the CodeSheet software is going to ignore this line. You can also use these comments in your macros.
+
+\begin{ex}
+  \begin{lstlisting}
+# character level
+level: 2
+
+# hit points
+hp: (CONbonus + 5)*level
+
+#### FULL ATTACK MACRO ####
+\MACRO: fullAttack
+  ## sword attack ##
+  execute swordAttack
+  # if it is a critical hit
+  if die >= 19 \then
+    ## critical sword attack ##
+    execute criticalSwordAttack
+  ## bite attack ##
+  execute biteAttack
+  # if it is a critical hit
+  if die = 20 \then
+    ## critical bite attack ##
+    execute criticalBiteAttack
+  \end
+\ENDMACRO
+###########################
+  \end{lstlisting}
+\end{ex}
+
+\section{Broken lines}
+
+In a \textit{.csheet} file you can break a line in two or more lines to make easier write and understand the code. To do that you have to add `$\backslash\backslash$' at the end of a line. When you add `$\backslash\backslash$' at the end of a line, this line and the next line are automatically joined, ignoring the spaces in the second line.
+
+\begin{ex} These lines in a \textit{.csheet} file:
+  \scriptsize
+  \begin{lstlisting}
+attack : 5 + \windowOption(First Bonus,\\
+                              plus one   :1,\\
+                              plus two   :2,\\
+                              plus three :3) \\
+           + level
+\MACRO: printAttribute
+  to print: This is \\
+            the attack's value = $$attribute$$ <br>
+  print
+\ENDMACRO
+  \end{lstlisting}
+  \normalsize
+are completely equivalent to these ones:
+  \scriptsize
+  \begin{lstlisting}
+attack : 5 + \windowOption(First Bonus,plus one   :1,plus two   :2,plus three :3) + level
+\MACRO: printAttribute
+  to print: This is the attack's value = $$attribute$$ <br>
+  print
+\ENDMACRO
+  \end{lstlisting}
+  \normalsize
+\end{ex}
+
+\chapter{Parameters}
+In this section we are going to revise the different parameters you can use to modify declarations. We separate the parameters using the `\textsf{+}' character, or the `\textsf{-}' character if we want to add the negative value of the following parameter.
+
+We can also make products and divisions, and use parenthesis. This information is shown at the end of this section.
+
+\section{Attributes}
+  We can use other attributes as a parameter.
+
+  \begin{ex}
+  \textsf{attribute1: attribute2 + 3}
+  \end{ex}
+
+\section{Numbers}  
+  We can use numerical values as a parameter. 
+
+  \begin{ex}
+  \textsf{attribute: 3 + 2 + 43 + 35}
+  \end{ex}
+
+\section{Dice rolls}
+  We can roll dice, i.e., we can generate random numbers as we do when we roll dice. Then, the value of a dice roll parameter is the value of a random number. To do that, we use the character `\textsf{\%}'. You must indicate the number of dice you want to roll and how many sides have these dice with the next syntax:
+
+\begin{center} \textsf{\%\textsc{\scriptsize[NUMBER OF DICE]}d\textsc{\scriptsize[NUMBER OF SIDES]}} \end{center}
+
+\begin{exs}
+\begin{itemize}
+  \item \textsf{\%2d6}
+  \item \textsf{\%1d20}
+  \item \textsf{\%20d6}
+  \item \textsf{\%3d7}
+\end{itemize}
+\end{exs}
+
+You can also use a declaration to indicate the number of dice and sides. In this case you must use brackets:
+
+\begin{center} \textsf{\%(\textsc{\scriptsize[DECLARATION]})d(\textsc{\scriptsize[DECLARATION]})} \end{center}
+
+\begin{ex}
+Suppose that we have the next attributes' declarations:
+\begin{itemize}
+  \item \textsf{level : 10}
+  \item \textsf{charismaBonus : 8 }
+  \item \textsf{attack : \%1d20 + charismaBonus}
+  \item \textsf{fireball : \%(level)d6}
+  \item \textsf{superFireball : \%(level + 5)d6 + level + charismaBonus}
+  \item \textsf{tremendousFireball : \%(level+charismaBonus+2)d(charismaBonus+2) + level}
+\end{itemize}
+then the attributes' values are:
+\begin{itemize}
+  \item \textsf{level = 10}
+  \item \textsf{charismaBonus = 8 }
+  \item \textsf{attack = 1d20 + 8}
+  \item \textsf{fireball = 10d6}
+  \item \textsf{superFireball = 15d6 + 18}
+  \item \textsf{tremendousFireball = 20d10 + 10}
+\end{itemize}
+where \textsf{1d20, 10d6, 15d6} and \textsf{20d10} are random numbers generated with the same probability distribution as the corresponding dice rolls.
+\end{ex}
+
+\subsection{Dice rolls' messages}
+
+When you generate a random number using a dice roll parameter (i.e. using the `\textsf{\%}' character), the system print a message writing the result of this dice roll. This message is written by the system and allows you to prove that you has generated a random number according to a dice roll and what has been the result.
+
+\subsection{Dice rolls' labels}
+
+If you want that the system print a label with a dice roll result to identify it easily, you must use this syntax:
+
+\begin{center} \textsf{\%\textsc{\scriptsize[DICE ROLL LABEL]}:\textsc{\scriptsize[NUMBER OF DICE]}d\textsc{\scriptsize[NUMBER OF SIDES]}} \end{center}
+
+\begin{ex}
+Suppose that we have the next attributes' declarations:
+\begin{itemize}
+  \item \textsf{level : 10}
+  \item \textsf{charismaBonus : 8 }
+  \item \textsf{numberRays : \%1d4} 
+  \item \textsf{ray\_attack\_roll : \%ray attack : 1d20 + charismaBonus}
+  \item \textsf{ray\_damage\_roll : \%ray damage : (level)d6}
+\end{itemize}
+then when we call this attributes, the system print the following messages (remember that the results are random, these are only examples):
+\begin{itemize}
+  \item numberRays:
+
+  \textsf{1d4 -$>$ 2}
+
+  \item ray\_attack\_roll:
+
+  \textsf{ray attack : 1d20 -$>$ 14}
+
+  \item ray\_damage\_roll:
+
+  \textsf{ray attack : 10d6 -$>$ 33}
+\end{itemize}
+\end{ex}
+
+\subsection{What to do to avoid the system printing of dice rolls' results}
+
+If you want to generate a random number using a dice roll parameter but you do not want that the system prints the result, you can use `\textsf{\%\%}' instead of `\textsf{\%}'. This is useful, for example, if you are a Master in a rol play game. You may want to generate dice rolls, however, you do not probably want to show the results to your players.
+
+\begin{ex}
+Suppose that we have the next attribute's declaration:
+\begin{itemize}
+  \item \textsf{ray : \%\%1d20 + 6}
+\end{itemize}
+then when we call this attribute, the system do NOT print the dice roll result.
+\end{ex}
+
+\section{Variables}
+
+We can use the variables's values of the macro which solve a declaration. To do that, we use the next syntax:
+
+\begin{center} \textsf{!\textsc{\scriptsize[VARIABLE'S NAME]}} \end{center}
+
+It is unusual to use variables in an attribute's declaration, however, it is necessary for non-attribute declarations. For more information about variables and macros, go to the Macros' Chapter.
+
+\begin{ex}
+  The declaration
+
+\textsf{!bonus1 + !bonus2 + strenght + \%2d6}
+
+is equal to the sum of the variables \textsf{bonus1} and \textsf{bonus2}, the attribute \textsf{strenght}, and the dice result of 2d6.
+\end{ex}
+
+
+\section{\textsf{\textbackslash min()} and \textsf{\textbackslash max()}}
+  There is the possibility to change the behavior of how we calculate an attribute's value when it is used as a parameter. Instead of adding each declaration's value to the final value of the attribute, we can find the maximum or minimum declaration's value. To do that you must use the next syntax:
+
+\begin{center} \textsf{\textbackslash min(\textsc{\scriptsize[ATTRIBUTE'S NAME]})} \end{center}
+or
+\begin{center} \textsf{\textbackslash max(\textsc{\scriptsize[ATTRIBUTE'S NAME]})} \end{center}
+
+
+  \begin{ex}
+  Suppose that we have the next attributes' declarations:
+  \begin{itemize}
+    \item \textsf{attribute1 : attribute2 + 2}
+    \item \textsf{attribute1 : 3}
+    \item \textsf{attribute1 : 5}
+    \item \textsf{attribute2 : 4}
+    \item \textsf{attribute3 : \textbackslash min(attribute1)}
+    \item \textsf{attribute4 : \textbackslash min(attribute1) + 10}
+    \item \textsf{attribute5 : \textbackslash max(attribute1)}
+    \item \textsf{attribute6 : \textbackslash max(attribute1) + \textbackslash max(attribute1)}
+  \end{itemize}
+  then the values of these attributes are:
+  \begin{itemize}
+    \item \textsf{attribute1 = 14}
+    \item \textsf{attribute2 = 4}
+    \item \textsf{attribute3 = 3}
+    \item \textsf{attribute4 = 13}
+    \item \textsf{attribute5 = 6}
+    \item \textsf{attribute6 = 9}
+  \end{itemize}
+  Notice that \textsf{\textbackslash min(attribute1)} is equal to \textsf{3} because \textsf{3} is the minimum of the \textsf{attribute1} declaration values. And \textsf{\textbackslash max(attribute1)} is \textsf{6} because \textsf{6} is the maximum (that is the value of the declaration: \textsf{attribute2 + 2}).
+  \end{ex}
+
+\section{Macro's return} \label{macroParameter}
+  We can execute a macro and use the \textsf{exit} instruction (\ref{exitInstructionReturningValue}) to return a value. To do that, we use the `\textsf{\&}' character followed by the macro's name. There are more information in the section `Macros'.
+
+  \begin{ex}
+  \textsf{attribute: 5 + \&macrosname + 7}
+  \end{ex}
+
+\subsection{Set of instructions' return}
+  We can execute a set of instructions and get a returned value via the \textsf{exit} instruction as we do with the \textbf{Macro's return}. The syntax to do that is:
+\begin{center}  \textsf{\&( \textsc{\scriptsize[INSTRUCTIONS]} )} \end{center}
+
+  When we write a macro, we separate the instructions by lines, i.e., one instruction one line. However, in this case we have to put all instructions in only one line. To do that we separate the instructions using the `\textsf{;}' character.
+
+\begin{ex} \\ 
+  \scriptsize
+  \textsf{min2d20: \&( new array arr; array-add \%1d20 \textbackslash to arr; array-add \%1d20 \textbackslash to arr; min arr \textbackslash to minValue; exit !minValue )}
+  \normalsize
+\end{ex} 
+\begin{ex}
+  \begin{lstlisting}
+min5d6Plus3: &( \\  
+                new array arr; \\
+                for i \from 1 \to 5 \do; \\
+                  array-add %1d6 \to arr; \\
+                \end; \\
+                min arr \to minValue; \\
+                exit !minValue \\
+              ) \\
+              + 3
+  \end{lstlisting}
+\end{ex}
+
+\section{\textsf{\textbackslash windowInput()}}
+
+The value of this parameter change depending on the input the user write each time that it is called. The user can write this input in a window which opens each time that the parameter is called. The syntax you must use is:
+
+\begin{center} \textsf{\textbackslash windowInput(\textsc{\scriptsize[MESSAGE TO SHOW]})} \end{center}
+
+\begin{ex}
+  Suppose that we have the next attributes' declarations:
+  \begin{itemize}
+    \item \textsf{attribute1 : attribute2 + 2}
+    \item \textsf{attribute2 : 3}
+    \item \textsf{attribute3 : attribute1 + \textbackslash windowInput(bonus?) + 1}
+  \end{itemize}  
+  then when the \textsf{attribute3} is called, a window with the message ``bonus?" opens. In this window the user can write a declaration, for example if the user write
+  \begin{itemize}
+    \item \textsf{3}, then the value of the \textsf{windowInput} parameter is 3 and the value of \textsf{attribute3} is \textsf{8}.
+    \item \textsf{attribute2 + 5}, then the value of the \textsf{windowInput} parameter is \textsf{8} and the value of \textsf{attribute3} is \textsf{14}.
+    \item \textsf{attribute2 + 6 + 2}, then the value of the \textsf{windowInput} parameter is \textsf{11} and the value of \textsf{attribute3} is \textsf{17}.
+  \end{itemize}
+
+\end{ex}
+
+\section{\textsf{\textbackslash windowOption()}}
+
+The value of this parameter also change depending on the user decision each time that it is called. In this case the user can not write the input directly, instead of that the user choose between different options. The syntax you must use is:
+
+\begin{center} \small \textsf{\textbackslash windowOption(\textsc{\scriptsize[MESSAGETOSHOW]},\textsc{\scriptsize[OPTION1]}:\textsc{\scriptsize[DECLARATION1]},\textsc{\scriptsize[OPTION2]}:\textsc{\scriptsize[DECLARATION2]},...)} \normalsize \end{center}
+
+\begin{exs}
+  \begin{itemize}
+    \item Suppose that the next parameter is called:
+    \begin{center} \textsf{\textbackslash windowOption(flank bonus?, yes : 2, no : 0)} \end{center}
+    then a window with the message ``flank bonus" opens. The user can choose between two buttons, ``yes" and ``no". If the user chooses ``yes" then the value of this parameter is \textsf{2}. If the user chooses ``no" then the value is \textsf{0}.
+
+    \item Suppose that the next parameter is called:
+    \begin{center} \textsf{\textbackslash windowOption(which saving throw?, fortitude : fort, reflex : ref + 2, will : will )} \end{center}
+    then a window with the message ``which saving throw?" opens. The user can choose between three buttons: ``fortitude", ``reflex" and ``will". If the user chooses
+    \begin{itemize}
+      \item ``fortitude" then the value of this parameter is the value of the declaration \textsf{fort}, i.e., the attribute \textsf{fort}. 
+      \item ``ref" then the value is the value of the declaration \textsf{ref + 2}. 
+      \item ``will" then the value is the value of the declaration \textsf{will}.
+    \end{itemize} 
+  \end{itemize}
+\end{exs}
+
+\section{\textsf{\textbackslash windowOptionList()}}
+
+This parameter is almost the same than the parameter \textsf{\textbackslash windowOptionList()}. There is only one difference. When the user have to choose between the different options, instead of buttons, this options are shown in a list. The syntax is:
+
+\begin{center} \small \textsf{\textbackslash windowOptionList(\textsc{\scriptsize[MESSAGE]},\textsc{\scriptsize[OPTION1]}:\textsc{\scriptsize[DECLARATION1]},\textsc{\scriptsize[OPTION2]}:\textsc{\scriptsize[DECLARATION2]},...)} \normalsize \end{center}
+
+\section{\textsf{\textbackslash if()()}}
+
+We use this parameter when we want to add a value only in some situations. The syntax is:
+
+\begin{center} \textsf{\textbackslash if(\textsc{\scriptsize[CONDITION]})(\textsc{\scriptsize[DECLARATION]})} \normalsize \end{center}
+
+If the \textsc{\scriptsize[CONDITION]} is satisfied when this parameter is called, then the value of this paramter is the value of \textsc{\scriptsize[DECLARATION]}. If the \textsc{\scriptsize[CONDITION]} is not satisfied, then the value is \textsf{0}.
+
+\subsection{Condition's syntax} \label{conditionSyntax}
+
+\begin{itemize}
+  \item \textbf{Logical AND} : \textsf{\scriptsize \&}
+  \item \textbf{Logical OR} : \textbackslash \textsf{\scriptsize OR}
+  \item \textbf{Logical Negation} : $\neg$
+  \item \textbf{Relational Operators} : $= \quad < \quad <= \quad > \quad >=$ 
+  \item \textbf{File Checker Operator} : \textsf{isEnable(\textsc{\scriptsize[FILES PATTERN]})} 
+\end{itemize}
+
+It is NOT possible to use parenthesis in a condition's syntax. It is necessary to develop the condition's expression in order to avoid the parenthesis. For exemple, 
+\begin{center} \textsf{$\neg$(A=B \& C=D)} \end{center}
+is NOT possible. However, we can use the equivalent expression 
+\begin{center}\textsf{$\neg$A=B \textbackslash OR $\neg$C=D} \end{center}
+where \textsf{A, B, C} and \textsf{D} are declarations.
+
+\subsubsection{\textsf{isEnable(\textsc{\scriptsize[FILES PATTERN]})}}
+
+This condition is \textit{TRUE} if the string \textsc{\scriptsize[FILES PATTERN]} is a substring of an enabled file. For example, \textsf{isEnable( weapon )} is \textit{TRUE} if one or more of these files
+\begin{itemize}
+  \item \textit{weapon.sword.csheet}
+  \item \textit{weapon.katana.csheet}
+  \item \textit{axe.weapon.csheet}
+  \item \textit{weaponsword.csheet}
+  \item \textit{axeweapon.csheet}
+\end{itemize}
+or any other file which contains the string \textit{weapon} is enabled.
+
+\begin{exs}
+  \begin{itemize}
+    \item \textsf{strengthBonus : 5 + \textbackslash if( isEnable(rage.csheet) )( 2 )}
+
+    The value of \textsf{strengthBonus} is \textsf{7} if the file \textit{rage.csheet} (or another file whose name contains the string \textit{rage.csheet}) is enable, and \textsf{5} if there is no matched file enable.
+
+    \item \textsf{strengthBonus : 5 + \textbackslash if( isEnable(rage.csheet) \& level $>$ 5 )( 2 )}
+
+    The value of \textsf{strengthBonus} is \textsf{7} if the file \textit{rage.csheet} (or another file whose name contains the string \textit{rage.csheet}) is enable and the attribute \textsf{level} is greater than \textsf{5}. However, the value is \textsf{5} if there is no matched file enable or the attribute \textsf{level} is less or equal to \textsf{5}.
+
+    \item \textsf{\textbackslash if( str $=$ dex \& $\neg$ char $=$ int \textbackslash OR  sab+5 $<=$ con ) ( level + 10 )}
+    
+    Supponse that \textsf{level, str, dex, con, sab, int} and \textsf{char} are attributes. Then, the value of this parameter is equal to the value of \textsf{level + 10} if the condition \textsf{str $=$ dex \& $\neg$ char $=$ int \textbackslash OR  sab $<=$ con} is satisfied, i.e., if \textsf{str} is equal to \textsf{dex} and \textsf{char} is different to \textsf{int}; or \textsf{sab+5} is less or equal to \textsf{con}. If the condition is not satisfied, then the value is \textsf{0}.
+  \end{itemize}
+\end{exs}
+
+
+\section{Tables}
+
+We can use \textsf{tables} as a parameter. A \textsf{table} has an $input$ and generates an $output$. Lets see an example:
+
+\begin{ex} 
+  \begin{lstlisting}
+0 : 2
+1 : 4
+2 : 7
+3 : 8 
+  \end{lstlisting}
+  This table generates the $output$ \textsf{2} for the $input$ \textsf{0}. In the same way, it generates the $outputs$ \textsf{4, 7} and  \textsf{8} for the $inputs$ \textsf{1, 2} and \textsf{3} respectively. For any $input$ different to \textsf{0, 1, 2} and \textsf{3} the $output$ is \textsf{0}.
+\end{ex}
+
+  A table is composed by different lines. Each line has the next syntax:
+  
+\begin{center} \textsf{\textsc{\scriptsize[CONDITION]} : \textsc{\scriptsize[OUTPUT]}} \normalsize \end{center}
+
+  When we call a table, we have to specify an $input$. The $output$ of the table is given by the first line that has a fulfilled \textsf{condition} according to the $input$. If there are no fulfilled \textsf{condition} in the table, then the $output$ is \textsf{0}.
+
+\subsection{Table's conditions}
+
+  In the first table example we used only one type of condition. This was
+
+\begin{center} if the $input$ is \textbf{equal} to \textsc{X}, then the $output$ is \textsc{Y} \end{center}
+
+  However, there are more possibilities. Lets see the next example:
+ 
+\begin{ex} 
+  \begin{lstlisting} 
+<=0 : 2 
+>0  : 4 
+  \end{lstlisting}
+
+  The $output$ of this table is \textsf{2} if the $input$ is equal or less than \textsf{0}, and \textsf{4} if the $input$ is greater than \textsf{0}.
+  \end{ex}
+
+  We can also use the \textsf{\&} character as a logical AND.
+
+\begin{ex} \begin{lstlisting}
+<=0 : -1
+0   : 0 
+>0   & <5  : 2 
+>=5  & <10 : 4 
+>=10 & <15 : 6 
+>=15 & <20 : 8 
+=20        : 10 
+\end{lstlisting} \end{ex}
+
+  Notice that to use the operator \textbf{equal} we can use the \textsf{=} character but it is not necessary. Then, the last table is equivalent to the next one:
+
+\begin{lstlisting}
+<=0        : -1
+0          : 0 
+>0   & <5  : 2 
+>=5  & <10 : 4 
+>=10 & <15 : 6 
+>=15 & <20 : 8 
+20         : 10 
+\end{lstlisting}
+
+\subsection{How to write a table in your sheet}
+
+There are two possibilities to create a table.
+
+\subsubsection{Create a .ctable file}
+
+We can create a plain text file with the extension \textsf{.ctable}. Inside this file we have to write the table. If the file has this name:
+\begin{center} \textsf{tablename.ctable} \end{center}
+then \textsf{tablename} is the name of the table. We have to use this name to call the table.
+
+\subsubsection{Table declaration inside a .csheet file}
+
+We can declare a table inside a .csheet file. This is the syntax: \vspace{5px}\\
+\textsf{\textbackslash TABLE: \textsc{\scriptsize[TABLE'S NAME]}} \\
+\textsc{\scriptsize[TABLE'S LINES]}\\
+\textsf{\textbackslash ENDTABLE}
+
+\begin{ex}
+  \begin{lstlisting}
+\TABLE: savesSlow
+  1 & 2       : 0
+  >=3  & <=5  : 1
+  >=6  & <=8  : 2
+  >=9  & <=11 : 3
+  >=12 & <=14 : 4
+  >=15 & <=17 : 5
+  >=18 & <=20 : 6
+\ENDTABLE
+  \end{lstlisting}
+\end{ex}
+
+\subsection{How to call a table as a parameter}
+
+In order to call a table as a parameter, you must use this syntax:
+
+\begin{center} \textsf{\textbackslash table( \textsc{\scriptsize[INPUT DECLARATION]} , \textsc{\scriptsize[TABLE'S NAME]} )} \normalsize \end{center}
+
+\begin{ex}
+  Suppose that we have the next \textit{.csheet} file:
+
+\begin{lstlisting}
+level : 6
+
+fort  : \table(level, savesFast) + 2
+ref   : \table(level, savesSlow)
+will  : \table( level + 3 , savesSlow )
+
+\TABLE: savesSlow
+  1 & 2       : 0
+  >=3  & <=5  : 1
+  >=6  & <=8  : 2
+  >=9  & <=11 : 3
+  >=12 & <=14 : 4
+  >=15 & <=17 : 5
+  >=18 & <=20 : 6
+\ENDTABLE
+
+\TABLE: savesFast
+  1       : 2
+  2  & 3  : 3
+  4  & 5  : 4
+  6  & 7  : 5
+  8  & 9  : 6
+  10 & 11 : 7
+  12 & 13 : 8
+  14 & 15 : 9
+  16 & 17 : 10
+  18 & 19 : 11
+  20      : 12
+\ENDTABLE
+  \end{lstlisting}
+  then, using only this \textit{.csheet} file, the attributes' values are:
+  \begin{itemize}
+    \item \textsf{fort = 7}
+    \item \textsf{ref  = 2}
+    \item \textsf{will = 3}
+  \end{itemize}
+\end{ex} 
+
+\section{Parameter's options}
+\subsection{Create a variable with parameter's value}
+We can create a variable in the current macro with the value of a parameter. The syntax to do that is:
+\begin{center} \textsf{\textsc{\scriptsize[PARAMETER]} \{\textsc{\scriptsize[VARIABLE'S NAME]}\}} \normalsize \end{center}
+
+\begin{ex}
+  \begin{lstlisting}
+attack: %1d20{die} + meleeBonus
+  \end{lstlisting}
+then when we call the \textsf{attack} attribute it is going to be created a variable with the \textsf{die} and value equal to the result of the d20 rolled.
+\end{ex}
+
+\begin{ex}
+  \begin{lstlisting}
+swordAttack: %1d20{die} + meleeBonus
+swordDamage: %1d8 + 5
+swordCritDamage: %2d8 + 10
+\MACRO: sword_Attack
+  ?swordAttack
+  if !die >= 19 \then
+    ?swordCritDamage
+    exit
+  \end
+  ?swordDamage
+\ENDMACRO
+  \end{lstlisting}
+\end{ex}
+
+\subsection{Attribute's tables} \label{attributesTables}
+
+We can make attributes's tables. To do that first we can write labels in the parameters which define this attribute.
+
+\subsubsection{Paramenter's labels}
+
+To assign a label to a parameter we use this syntax:
+\begin{center} \textsf{\textsc{\scriptsize[PARAMETER]} [ \textsc{\scriptsize[LABEL]} ]} \normalsize \end{center}
+
+\begin{ex}
+  \begin{lstlisting}
+attack: %1d20[die] + 20[melee bonus] + 2*4*3[mega bonus]
+  \end{lstlisting}
+then the attack's table is:
+\begin{table}[!ht]
+\scriptsize
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{\textsf{attack}} \\ \hline
+ die & 1d20 result  \\ \hline
+ melee bonus & 20 \\ \hline
+ mega bonus  & 24 \\ \hline
+ TOTAL & the total \\ \hline
+\end{tabular}
+\end{table}
+\end{ex}
+
+\begin{ex}
+  \begin{lstlisting}
+damage: %2d6[dice] + 5[strengh] + \windowOption(extra bonus?)[extra bonus]
+  \end{lstlisting}
+then the attack's table is:
+\begin{table}[!ht]
+\scriptsize
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{\textsf{damage}} \\ \hline
+ dice & 2d6 result  \\ \hline
+ strengh & 5 \\ \hline
+ extra bonus  & user's iput \\ \hline
+ TOTAL & the total \\ \hline
+\end{tabular}
+\end{table}
+\end{ex}
+
+\subsubsection{Attribute labels}
+
+When we make an attribute table, we can show a name for the attribute different to the name we use in the sheet. To do that we must include a line with this syntax in a \textit{.csheet} file:
+\begin{center} \textsf{@\textsc{\scriptsize[ATTRIBUTE'S NAME]}:\textsc{\scriptsize[LABEL]}} \normalsize \end{center}
+
+\begin{ex}
+  \begin{lstlisting}
+swordAtt: %1d20[die] + 10[melee bonus]
+@swordAtt:Attack with short sword
+  \end{lstlisting}
+  the swordAtt table is:
+\begin{table}[!ht]
+\scriptsize
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{\textsf{Attack with short sword}} \\ \hline
+ die & 1d20 result  \\ \hline
+ melee bonus & 10 \\ \hline
+ TOTAL & the total \\ \hline
+\end{tabular}
+\end{table}
+
+\end{ex}
+
+\subsubsection{Using \textsf{?} to make tables recursively}
+
+When we make a attribute's table, we can also write the tables of some attribute parameters. To do that we use the \textsf{?} at the begining of the attribute parameter.
+
+\begin{ex}
+  \begin{lstlisting}
+lvl: 3
+strBonus: 5
+magicBonus: 3
+meleeBonus: strBonus[strengh] + lvl[level]
+attack: %1d20[die] + ?meleeBonus[melee bonus] + magicBonus[magic bonus]
+  \end{lstlisting}
+when we call the attack's table, the system is going to write: \\ \\ 
+\begin{minipage}[t]{0.4\textwidth}
+\scriptsize
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{\textsf{meleeBonus}} \\ \hline
+ strengh & 5  \\ \hline
+ level & 3 \\ \hline
+ TOTAL & 8 \\ \hline
+\end{tabular}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{\textsf{attack}} \\ \hline
+ die & 1d20 result  \\ \hline
+ melee bonus & 8 \\ \hline
+ magic bonus & 3 \\ \hline
+ TOTAL & the total \\ \hline
+\end{tabular}
+\end{minipage}
+\end{ex}
+
+\subsubsection{Calling an attribute's table}
+
+To call and write in the display an attribute's table you can use the CodeSheet interface making double-click in the attribute's name or you can use the table macro instruction (\ref{tableMacroInstruction}).
+
+\subsection{Labels and variable creation. Both options in the same parameter}
+
+If you want to use both parameter's options, you have to specify first the label and at the end the variable creation. The syntax would be:
+\begin{center} \small \textsf{\textsc{\scriptsize[PARAMETER]} [ \textsc{\scriptsize[LABEL]} ] \{\textsc{\scriptsize[VARIABLE'S NAME]}\} } \normalsize \end{center}
+
+If you invert the order, the options are not going to work.
+
+\begin{exs}
+\scriptsize
+  \begin{lstlisting}
+attack: %1d20[die]{die} + 20[melee bonus] + 2*4*3[mega bonus]
+damage: %2d6[dice]{dice} + 5[strengh] + \windowOption(extra bonus?)[extra bonus]
+  \end{lstlisting}
+\end{exs}
+
+\section{Multiplications and divisions}
+
+When we make a declaration we can do multiplications and divisions. The characters you must use are the usuals \textsf{*} and \textsf{/}.
+
+\begin{ex} Suppose that we have the next declarations:
+  \begin{itemize}
+    \item \textsf{attribute1 : 5 + 5}
+    \item \textsf{attribute2 : attribute1/3}
+    \item \textsf{attribute3 : 2*3/10}
+  \end{itemize}
+\end{ex}
+then the attributes' values are:
+\begin{itemize}
+  \item \textsf{attribute1 = 10}
+  \item \textsf{attribute2 = 3.333333}
+  \item \textsf{attribute2 = 0.6}
+\end{itemize}
+
+We can also truncate or round the result of a multiplication or division using the next syntax:
+\begin{itemize}
+  \item Round Product:
+    \begin{center} \textsf{\textsc{\scriptsize[FIRST FACTOR]}*r:\textsc{\scriptsize[SECOND FACTOR]}} \normalsize \end{center}
+  \item Truncate Product:
+    \begin{center} \textsf{\textsc{\scriptsize[FIRST FACTOR]}*t:\textsc{\scriptsize[SECOND FACTOR]}} \normalsize \end{center}
+  \item Round Quotient:
+    \begin{center} \textsf{\textsc{\scriptsize[NUMERATOR]}/r:\textsc{\scriptsize[DENOMINATOR]}} \normalsize \end{center}
+  \item Truncate Quotient:
+    \begin{center} \textsf{\textsc{\scriptsize[NUMERATOR]}/t:\textsc{\scriptsize[DENOMINATOR]}} \normalsize \end{center}
+\end{itemize}
+
+\begin{exs}
+  \begin{itemize}
+    \item 2/3 \\ result = 0.666666
+    \item 2/r:3 \\ result = 1
+    \item 2/t:3 \\ result = 0
+    \item 2*0.333333 \\ result = 0.6666667
+    \item 2*r:0.333333 \\ result = 1
+    \item 2*t:0.333333 \\ result = 0
+    \item (attribute1 + attribute2)/t:3
+    \item (attribute1 + attribute2)/t:attribute3
+    \item (attribute1 + attribute2)*r:(attribute3 + attribute4)
+  \end{itemize}
+\end{exs}
+
+\subsection{Parenthesis}
+  
+We recommend to use parenthesis when the operations' order is not clear. For example
+$$8/4/2$$
+could be
+$$1 = (8/4)/2$$
+or
+$$4 = 8/(4/2).$$
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Macros}
+
+In this section we are going to revise the different instructions you can use in your macros. First, we are going to show the syntax to create a \textsf{macro} in a \textit{.csheet} file:
+\vspace{5px}\\
+\textsf{\textbackslash MACRO: \textsc{\scriptsize[MACRO'S NAME]}} \\
+\textsc{\scriptsize[MACRO'S INSTRUCTIONS]} \\
+\textsf{\textbackslash ENDMACRO} \\
+
+You must write each instruction in one line (or more, some instructions need more than one line ,i.e., \textsf{to print lines}). It is NOT possible to write two or more instructions in one line.
+
+\section{Variables}
+
+There are three variable types:
+\begin{itemize}
+  \item Numerical variables
+  \item Text variables
+  \item Numerical arrays
+  \item Text arrays
+\end{itemize}
+
+\subsection{Array Positions}
+Sometimes we want to use the value of an array's position. It is important to stress that the positions start with the 0 position.
+
+\begin{ex} In this array:
+  \begin{center} \textsf{arr = [7, 5, 6, 3]}\end{center}
+  \textsf{7} is the 0 position, \textsf{5} is the 1st position, \textsf{6} is the 2nd position and \textsf{3} is the 3rd position.
+\end{ex}
+
+\subsection{Numerical variables}
+
+To assign a value to a numerical variable, we use this syntax:
+\begin{center} \textsf{!\textsc{\scriptsize[VARIABLE'S NAME]} = \textsc{\scriptsize[DECLARATION]}} \normalsize \end{center}
+\begin{exs}
+  \begin{itemize}
+    \item \textsf{!var = 5}
+    \item \textsf{!var = attribute + !var2 + 5}
+    \item \textsf{!attack = attack + !attackBonus}
+  \end{itemize}
+In the last example, we assign to the \textsf{attack \textbf{variable}} the value of the sum of the \textsf{attack \textbf{attribute}} and the \textsf{attackBonus \textbf{variable}}.
+\end{exs}
+
+\subsection{Numerical arrays}
+
+\subsubsection{Create arrays}
+To create an array you have to use this syntax:
+\begin{center} \textsf{new array \textsc{\scriptsize[ARRAY'S NAME]}} \normalsize \end{center}
+\begin{ex} 
+  new array attacksDiceRolls
+\end{ex}
+
+\subsubsection{Add value}
+To add an element to you array you have to use this syntax:
+\begin{center} \textsf{array-add \textsc{\scriptsize[DECLARATION]} \textbackslash to \textsc{\scriptsize[ARRAY'S NAME]}} \normalsize \end{center}
+\begin{ex} 
+  \textsf{array-add \%1d20 + 12 \textbackslash to attacks}
+\end{ex}
+
+
+\subsubsection{Delete array element}
+We can also delete an array element. To do that we use this syntax:
+\begin{center} \textsf{array-del \textsc{\scriptsize[POSITION'S DECLARATION]} \textbackslash of \textsc{\scriptsize[ARRAY'S NAME]}} \normalsize \end{center}
+\begin{exs} 
+  \begin{itemize}
+    \item \textsf{array-del 3 \textbackslash of attacks} \\
+    Delete the 3rd position of the \textsf{attacks} array.
+    \item \textsf{array-del 3 + 2 \textbackslash of attacks} \\
+    Delete the 5th position of the \textsf{attacks} array.
+    \item \textsf{array-del !positionToDelelete \textbackslash of attacks} \\
+    Delete the \textsf{attacks} array's element according to the position given by the \textsf{positionToDelete} variable.
+  \end{itemize}
+\end{exs}
+
+\subsubsection{Sort an array}
+We can sort an array using the next syntax:
+\begin{center} \textsf{sort \textsc{\scriptsize[ARRAY'S NAME]} \textbackslash to \textsc{\scriptsize[SORTED ARRAY'S NAME]}} \normalsize \end{center}
+After this instruction a new array with the sorted values of the \textsc{\scriptsize[ARRAY'S NAME]} array is created. The name of this new array is \textsc{\scriptsize[SORTED ARRAY'S NAME]}.
+
+\begin{ex} Suppose that we run this instructions
+  \begin{lstlisting}
+new array arr
+arr-add 7 \to arr
+arr-add 5 \to arr
+arr-add 6 \to arr
+arr-add 3 \to arr
+sort arr \to arrSorted
+  \end{lstlisting}
+  then the values of the \textsf{arr} array are:
+  \begin{center} \textsf{arr = [7, 5, 6, 3]}\end{center}
+  and the values of the \textsf{arrSorted} are:
+  \begin{center} \textsf{arrSorted = [3, 5, 6, 7]}\end{center}
+\end{ex}
+
+\subsubsection{Assign to a variable the sum, the minimum or the maximum value of a numerical array}
+The syntax to do that is:
+\begin{center} \textsf{sum \textsc{\scriptsize[ARRAY'S NAME]} \textbackslash to \textsc{\scriptsize[VARIABLE'S NAME]}} \normalsize \end{center}
+\begin{center} \textsf{min \textsc{\scriptsize[ARRAY'S NAME]} \textbackslash to \textsc{\scriptsize[VARIABLE'S NAME]}} \normalsize \end{center}
+\begin{center} \textsf{max \textsc{\scriptsize[ARRAY'S NAME]} \textbackslash to \textsc{\scriptsize[VARIABLE'S NAME]}} \normalsize \end{center}
+
+\begin{ex} Suppose that we run this instructions
+  \begin{lstlisting}
+new array arr
+arr-add 7 \to arr
+arr-add 5 \to arr
+arr-add 6 \to arr
+arr-add 3 \to arr
+sum arr \to arrSum
+min arr \to arrMin
+max arr \to arrMax
+  \end{lstlisting}
+  then the values of the \textsf{arr} array are:
+  \begin{center} \textsf{arr = [7, 5, 6, 3]}\end{center}
+  and the variables' values are:
+  \begin{itemize}
+    \item \textsf{arrSum = 21}
+    \item \textsf{arrMin = 3}
+    \item \textsf{arrMax = 7}
+  \end{itemize}
+\end{ex}
+
+In the case of \textsf{min} and \textsf{max} instruction we can assign the position in the array instead of the value. To do that we use this syntax:
+\begin{center} \textsf{min-pos \textsc{\scriptsize[ARRAY'S NAME]} \textbackslash to \textsc{\scriptsize[VARIABLE'S NAME]}} \normalsize \end{center}
+\begin{center} \textsf{max-pos \textsc{\scriptsize[ARRAY'S NAME]} \textbackslash to \textsc{\scriptsize[VARIABLE'S NAME]}} \normalsize \end{center}
+
+\begin{ex} Suppose that we run this instructions
+  \begin{lstlisting}
+new array arr
+arr-add 7 \to arr
+arr-add 5 \to arr
+arr-add 6 \to arr
+arr-add 3 \to arr
+min-pos arr \to arrMinPos
+max-pos arr \to arrMaxPos
+  \end{lstlisting}
+  then the values of the \textsf{arr} array are:
+  \begin{center} \textsf{arr = [7, 5, 6, 3]}\end{center}
+  and the variables' values are:
+  \begin{itemize}
+    \item \textsf{arrMinPos = 3}
+    \item \textsf{arrMaxPos = 0}
+  \end{itemize}
+\end{ex}
+
+\subsubsection{Use array element as a variable}
+We can use array elements as we use variables. You have to use the next syntax:
+\begin{center} \textsf{!(\textsc{\scriptsize[POSITION'S DECLARATION]})\textsc{\scriptsize[ARRAY'S NAME]}} \normalsize \end{center}
+\begin{exs} 
+  \begin{itemize}
+    \item \textsf{!(2)attacks = 4} \\
+    Change the value of the 2nd position of the \textsf{attacks} array. This position MUST exists.
+    \item \textsf{!(!position)attacks = attribute + !var*2} \\
+    \item \textsf{!(attribute + !var + 5)attacks = 34} \\
+    \item \textsf{!var1 = !(3)var2 + !(!pos+1)var3} \\
+  \end{itemize}
+\end{exs}
+
+The position's values should be integers, i.e., numbers without decimals. If the system detect a decimal number, this number will be rounded.
+
+\begin{ex} Suppose that we have the next array:
+  \begin{center} \textsf{arr = [7, 5, 6, 3]}\end{center}
+  then
+  \begin{itemize}
+    \item \textsf{!(0.1)arr} is equal to \textsf{7}
+    \item \textsf{!(0.9)arr} is equal to \textsf{5}
+    \item \textsf{!(1.499)arr} is equal to \textsf{5}
+    \item \textsf{!(2.5)arr} is equal to \textsf{3}
+  \end{itemize} 
+\end{ex}
+
+\subsection{Text variables}
+
+To assign text to a text variable, we use this syntax:
+\begin{center} \textsf{@\textsc{\scriptsize[TEXT VARIABLE'S NAME]}=\textsc{\scriptsize[TEXT]}} \normalsize \end{center}
+\begin{exs}
+  \begin{itemize}
+    \item \textsf{@textVar=some text}
+  \end{itemize}
+\end{exs}
+
+\subsection{Text arrays}
+
+\subsubsection{Create text arrays}
+To create a text array you have to use this syntax:
+\begin{center} \textsf{new text-array \textsc{\scriptsize[TEXT ARRAY'S NAME]}} \normalsize \end{center}
+\begin{ex} 
+  new text-array attackNames
+\end{ex}
+
+\subsubsection{Add text element}
+To add an element to your text-array you have to use this syntax:
+\begin{center} \textsf{text-array-add \textsc{\scriptsize[TEXT]}\textbackslash to \textsc{\scriptsize[TEXT ARRAY'S NAME]}} \normalsize \end{center}
+\begin{ex} Suppose that we want to create a text array named \textsf{attackNames} with three elements: \textsf{``Right hand sword", ``Left hand axe"} and \textsf{``Bite"}. Then we can use these instructions:
+  \begin{lstlisting}
+new text-array attackNames
+text-array-add Right hand sword\to attackNames
+text-array-add Left hand axe\to attackNames
+text-array-add Bite\to attackNames
+  \end{lstlisting}
+\end{ex}
+
+\subsubsection{Delete text array element}
+We can also delete a text array element. To do that we use this syntax:
+\begin{center} \textsf{text-array-del \textsc{\scriptsize[POSITION'S DECLARATION]} \textbackslash of \textsc{\scriptsize[TEXT ARRAY'S NAME]}} \normalsize \end{center}
+\begin{exs} 
+  \begin{itemize}
+    \item \textsf{text-array-del 3 \textbackslash of attackNames} \\
+    Delete the 3rd position of the \textsf{attackNames} text array.
+    \item \textsf{array-del 3 + 2 \textbackslash of attackNames} \\
+    Delete the 5th position of the \textsf{attackNames} text array.
+    \item \textsf{array-del !positionToDelelete \textbackslash of attackNames} \\
+    Delete the \textsf{attackNames} text array's element according to the position given by the \textsf{positionToDelete} variable.
+  \end{itemize}
+\end{exs}
+
+\subsubsection{Change an existing text array element}
+We can change the text stored in a text array element. To do that we use this syntax:
+\begin{center} \textsf{@(\textsc{\scriptsize[POSITION'S DECLARATION]})\textsc{\scriptsize[TEXT ARRAY'S NAME]}=\textsc{\scriptsize[TEXT]}} \normalsize \end{center}
+\begin{ex} Suppose that we have this instructions:
+\begin{lstlisting}
+new text-array strings
+text-array-add this is the first string\to strings
+text-array-add this is the second string\to strings
+text-array-add this is the third string\to strings
+\end{lstlisting}
+then these are the elements of the \textsf{strings} array:
+\begin{center} \textsf{strings = [``this is the first string", ``this is the second string", ``this is the third string"]} \end{center}
+Now, if we add these instructions:
+\begin{lstlisting}
+!var=1
+@(0)strings=this is the 1st str
+@(3-2)strings=this is the 2nd str
+@(!var+1)strings=this is the 3rd str
+\end{lstlisting}
+then these are the elements of the \textsf{strings} array:
+\begin{center} \textsf{strings = [``this is the 1st str", ``this is the 2nd str", ``this is the 3rd str"]} \end{center}
+\end{ex}
+
+\subsection{Assign to a variable the length of an array}
+If we want to know the number of elements that an array have, we can save it in a variable usign the next syntax:
+\begin{center} \textsf{length of \textsc{\scriptsize[ARRAY'S NAME]} \textbackslash to \textsc{\scriptsize[VARIABLE'S NAME]}} \normalsize \end{center}
+
+\begin{ex} \textsf{length of attacks \textbackslash to attacksLen} \\
+  After this instruction, the value of the variable \textsf{attacksLen} is equal to the number of elements of the \textsf{attacks} array.
+\end{ex}
+
+If there are a numerical array and a text array with the same name, then the saved value is the length of the NUMERICAL array.
+
+\subsection{\textsf{copy}}
+
+We can make a copy of a variable (numerical variable, numerical array, text variable or text array). To do that we use this syntax:
+\begin{center} \textsf{copy \textsc{\scriptsize[VARIABLE'S NAME]} \textbackslash in \textsc{\scriptsize[NEW VARIABLE'S NAME]}} \normalsize \end{center}
+\begin{ex} Suppose that we have this instructions
+  \begin{lstlisting}
+new array arr1
+array-add 1 \to arr1
+array-add 2 \to arr1
+array-add 3 \to arr1
+copy arr1 \in arr2
+  \end{lstlisting}
+then we have created these two arrays:
+\begin{center} \textsf{arr1 = [1 ,2, 3]} \end{center}
+\begin{center} \textsf{arr2 = [1 ,2, 3]} \end{center}
+\end{ex}
+
+If we have different types of variables with the same name, then all matched variables are copied.
+
+\begin{ex} Suppose that we have this instructions
+  \begin{lstlisting}
+!var = 0
+@var = some text
+new array var
+array-add 1 \to var
+array-add 2 \to var
+array-add 3 \to var
+new text-array var
+text-array-add textone \to var
+text-array-add texttwo \to var
+text-array-add textthree \to var
+copy var \to var2
+  \end{lstlisting}
+  then we have created these variables:
+  \begin{itemize}
+    \item Numerical variables
+      \begin{center} \textsf{var = 0} \end{center}
+      \begin{center} \textsf{var2 = 0} \end{center}
+    \item Text variables
+      \begin{center} \textsf{var = ``some text"} \end{center}
+      \begin{center} \textsf{var2 = ``some text"} \end{center}
+    \item Numerical arrays
+      \begin{center} \textsf{var = [1, 2, 3]} \end{center}
+      \begin{center} \textsf{var2 = [1, 2, 3]} \end{center}
+    \item Text arrays
+      \begin{center} \textsf{var = [``textone", ``texttwo", ``textthree"]} \end{center}
+      \begin{center} \textsf{var2 = [``textone", ``texttwo", ``textthree"]} \end{center}
+  \end{itemize}
+\end{ex}
+
+\section{Print}
+
+We have some instructions to print in the CodeSheet's display. 
+
+\subsection{HTML}
+
+The CodeSheet display interprets the HTML language. For example, if we print the next text:
+\begin{lstlisting}
+<p><strong>text</strong></p>
+<p><em>text</em></p>
+<p><span style="text-decoration: underline;">text</span></p>
+<p><span style="color: #ff0000;">text</span></p>
+<p><strong><span style="color: #ff0000;">text</span></strong></p>
+<p><em><span style="color: #ff0000;">text</span></em></p>
+<p><span style="color: #0000ff;">text</span></p>
+\end{lstlisting}
+then the CodeSheet display is going to show something like: 
+\vspace{5px} \\
+\textbf{text}\\
+\textit{text}\\
+\underline{text}\\
+\textcolor{red}{text} \\
+\textcolor{red}{\textbf{text}}\\
+\textcolor{red}{\textit{text}}\\
+\textcolor{blue}{text} \\
+
+The \textsf{style} for \textsf{body} and \textsf{tables} is preset. 
+
+You MUST NOT use \textsf{$<$body$>$} because the display could go crazy. When you send a message the system write your message between \textsf{$<$body$>$} and \textsf{$<$/body$>$} in the HTML code:
+\begin{center} \textsf{$<$body$>$ \textsc{\scriptsize[YOUR MESSAGE]} $<$/body$>$}\end{center}
+
+\subsection{print buffer}
+
+When we use the ``\textsf{print}" instruction, we send the text stored in the \textbf{print buffer} and then the display show a message according to this text. To store text in the \textbf{print buffer} we use the instruction ``\textsf{to print}".
+
+\subsection{\textsf{to print}}
+
+To store text in the print buffer we use this syntax: 
+\begin{center} \textsf{to print:\textsc{\scriptsize[TEXT TO BUFFER]}}\end{center}
+
+\begin{ex} Suppose that we execute this instructions:
+  \begin{lstlisting}
+to print:first line,
+to print: more text in the first line <br>
+to print: second line <br>
+to print: third line <br>
+  \end{lstlisting}
+then we have stored this text in the \textbf{print buffer}:
+  \begin{lstlisting} [basicstyle=\small]
+first line, more text in the first line <br> second line <br> third line <br>
+  \end{lstlisting}
+\end{ex}
+  
+\subsection{\textsf{print}}
+
+With the \textsf{print} instruction we send to the display the text stored in the \textbf{print buffer}.
+
+\begin{ex} Suppose that we execute this instructions:
+  \begin{lstlisting}
+to print:first line,
+to print: more text in the first line <br>
+to print:second line <br>
+to print:third line <br>
+print
+  \end{lstlisting}
+then the display is going to show something like: \vspace{5px}\\
+\textsf{first line, more text in the first line \\
+second line \\
+third line \\}
+\end{ex}
+
+\subsection{\textsf{to print lines}}
+
+This instruction is similar to ``\textsf{to print}" instruction. With this instruction you can send text to the \textbf{print buffer}. Howver, you can send more than one line. The syntax is:
+\vspace{5px}\\
+\textsf{to print lines} \\
+\textsc{\scriptsize[LINES TO BUFFER]} \\
+\textsf{\textbackslash end} \\
+
+\begin{ex} Suppose that we execute this instructions:
+  \begin{lstlisting}
+to print lines
+first line,
+more text in the first line <br>
+second line <br>
+third line <br>
+\end
+print
+  \end{lstlisting}
+then the display is going to show something like: \vspace{5px}\\
+\textsf{first line, more text in the first line \\
+second line \\
+third line \\}
+\end{ex}
+
+It is important to stress that you have to use the HTML syntax to make a line break.
+
+\begin{ex} Suppose that we execute this instructions:
+  \begin{lstlisting}
+to print lines
+First
+Second
+Third
+\end
+print
+  \end{lstlisting}
+then the display is going to show something like: \vspace{5px}\\
+\textsf{FirstSecondThird\\}
+\end{ex}
+
+However, we can use the ``\textsf{to print with line breaks}" instruction to automatically make a line break at the end of each line.
+
+\subsection{\textsf{to print with line breaks}}
+
+This instruction is similar to ``\textsf{to print lines}" instruction. The difference is that with this instruction, the system add ``\textsf{$<$br$>$}" (the HTML syntax of a line break) at the end of each line. The syntax is:
+\vspace{5px}\\
+\textsf{to print with line breaks} \\
+\textsc{\scriptsize[LINES TO BUFFER (with an automatic line break at the end of each line)]} \\
+\textsf{\textbackslash end} \\
+
+\begin{ex} Suppose that we execute this instructions:
+  \begin{lstlisting}
+to print with line breaks
+First
+Second
+Third
+\end
+print
+  \end{lstlisting}
+then the display is going to show something like: \vspace{5px}\\
+\textsf{First \\
+Second \\
+Third \\}
+\end{ex}
+
+\subsection{\textsf{to print files matching with}}
+
+With this instruction you can send to the \textbf{print buffer} a list of the files which match according to a pattern. The syntax to do that is:
+\begin{center} \textsf{to print files matching with \textsc{\scriptsize[PATTERN]}} \end{center}
+
+\begin{ex} Suppose that we have this files in a CodeSheet:
+  \begin{itemize} 
+    \item \textit{sword.weapon.csheet}
+    \item \textit{longsword.weapon.csheet}
+    \item \textit{axe.weapon.csheet}
+    \item \textit{stats.csheet}
+  \end{itemize}
+  then when we run  \textsf{to print files matching with weapon}, then the display is going to show something like:
+  \begin{itemize}
+    \item \textsf{sword.weapon.csheet}
+    \item \textsf{longsword.weapon.csheet}
+    \item \textsf{axe.weapon.csheet}
+  \end{itemize}
+\end{ex}
+
+\subsection{Print attribute's table} \label{tableMacroInstruction}
+To print an attribute's table (\ref{attributesTables}) you have to use this syntax:
+\begin{center} \textsf{?\textsc{\scriptsize[ATTRIBUTE'S NAME]}} \end{center}
+
+\begin{ex}
+  \begin{lstlisting}
+swordAtt: %1d20[die] + 15[melee bonus]
+@swordAtt:Attack with long sword
+swordDmg: %1d8[die]  + 5 [strengh]
+@swordDmg:Damage with long sword
+\MACRO: swordAttack
+  ?swordAtt
+  ?swordDmg
+  print
+\ENDMACRO
+  \end{lstlisting}
+\end{ex}
+
+\subsubsection{Print attribute's table and store the attribute's value in a variable}
+If you want to store the attribute's value when you print it using the attribute's table instruction, you have to use this syntax:
+\begin{center} \textsf{?\textsc{\scriptsize[ATTRIBUTE'S NAME]} \textbackslash to \textsc{\scriptsize[VARIABLE'S NAME]} } \end{center}
+
+\begin{ex}
+  \begin{lstlisting}
+\MACRO: fullAttack
+  ?swordAtt \to swordAttack
+  ?swordDmg \to swordDamage
+  ?axeAtt \to axeAttack
+  ?axeDmg \to axeDamage
+  ?biteAtt \to biteAttack
+  ?biteDmg \to biteDamage
+  to print: <p>SUMMARIZE</p>
+  to print: <p>sword: attack->$$!swordAttack$$ / damage->$$!swordDamage$$ </p>
+  to print: <p>axe:   attack->$$!axeAttack$$ / damage->$$!axeDamage$$ </p>
+  to print: <p>bite:  attack->$$!biteAttack$$ / damage->$$!biteDamage$$ </p>
+  print
+\ENDMACRO
+  \end{lstlisting} 
+\end{ex}
+
+
+\subsection{Write/get numerical variables and declarations' values}
+
+If you want to print/get a declaration value, you must use this syntax:
+\begin{center} \textsf{\$\$\textsc{\scriptsize[DECLARATION]}\$\$} \end{center}
+
+\begin{ex} Suppose that you have a file with these lines:
+  \begin{lstlisting}
+attribute: 5
+\MACRO: printAttributePlus2
+  to print:The attribute's value plus 2 is $$attribute + 2$$. <br> Bye!
+  print
+\ENDMACRO
+  \end{lstlisting} 
+then when you run the \textsf{printAttributePlus2} macro, your display is going to show this message:
+\vspace{5px}
+
+\textsf{The attribute's value plus 2 is 7 \\
+Bye!}
+\end{ex}
+
+It is important to stress that the declaration's value is rounded to the closest integer.
+
+\begin{ex} Suppose that you have a file with these lines:
+  \begin{lstlisting}
+attribute: 5
+\MACRO: printAttributePlusPoint6
+  !pointFive = 5/10
+  to print:The value is $$attribute + !pointFive + 1/10$$. <br> Bye!
+  print
+\ENDMACRO
+  \end{lstlisting} 
+then when you run the \textsf{printAttributePlusPoint6} macro, your display is going to show this message:
+\vspace{5px}
+
+\textsf{The value is 6 \\
+Bye! \\}
+\end{ex}
+
+However, we can show the decimals using this syntax:
+\begin{center} \textsf{\$\$\textsc{\scriptsize[NUMBER OF DECIMALS TO SHOW]}\$\textsc{\scriptsize[DECLARATION]}\$\$} \end{center}
+
+\begin{ex} Suppose that you have a file with these lines:
+\scriptsize
+  \begin{lstlisting}
+attribute: 5
+\MACRO: printDeclarations
+  new array pointFiveArray
+  array-add 1/2 \to pointFiveArray
+  to print with line breaks
+Attribute plus 0.6 with 1 decimal = $$1$attribute + !(0)pointFiveArray + 1/10$$
+2/3 with no decimals = $$2/3$$
+2/3 with 1 decimal   = $$1$2/3$$
+2/3 with 2 decimals  = $$2$2/3$$
+2/3 with 3 decimals  = $$3$2/3$$
+Bye!
+  \end
+  print
+\ENDMACRO
+  \end{lstlisting} 
+\normalsize
+then when you run the \textsf{printDeclarations} macro, your display is going to show this message: \vspace{5px} \\
+\textsf{Attribute plus 0.6 with 1 decimal = 5,6 \\ 
+2/3 with no decimals = 1 \\
+2/3 with 1 decimal = 0,7 \\
+2/3 with 2 decimals = 0,67 \\
+2/3 with 3 decimals = 0,667 \\
+Bye! \\}
+\end{ex}
+
+You can use this syntax in more contexts. You can use this syntax almost always when the system reads text.
+
+\begin{ex} Suppose that we have this instruction
+  \begin{lstlisting}
+  @var=this is twenty $$5*3+2+3$$, and this is fifty $$25+25$$.
+  \end{lstlisting}
+then the text stored in the \textsf{var} text variable is:
+\begin{center} \textsf{var = ``this is twenty 20, and this is fifty 50."} \end{center} 
+\end{ex}
+
+
+\subsection{Write/get text variables}
+
+To write/get the text stored in a text variable you must use this syntax:
+\begin{center} \textsf{@@\textsc{\scriptsize[TEXT VARIABLE'S NAME]}@@} \end{center}
+
+\begin{ex} Suppose that you have a file with these lines:
+\scriptsize
+  \begin{lstlisting}
+\MACRO: printTextVariables
+  @attackName = bite
+  new text-array weaponNames
+  text-array-add sword\to weaponNames
+  text-array-add axe\to weaponNames
+  text-array-add spear\to weaponNames
+  to print:The attack's name is @@attackName@@. <br>
+  to print:Some weapons: @@(0)weaponNames@@, @@(1)weaponNames@@ and @@(2)weaponNames@@ 
+  print
+\ENDMACRO
+  \end{lstlisting} 
+\normalsize
+then when you run the \textsf{printTextVariables} macro, your display is going to show this message:
+\vspace{5px}
+
+\textsf{The attack's name is bite. \\
+Some weapons: sword, axe and spear}
+
+\end{ex}
+
+You can use this syntax in more contexts. You can use this syntax almost always when the system reads text.
+
+\begin{ex} Suppose that you have a file with these lines:
+\scriptsize
+  \begin{lstlisting}
+attribute:5
+\MACRO: printTextVariable
+  @bye=Good bye!
+  @var=the attribute's value is $$attribute$$.
+  @var=@@var@@ And the attribute's value plus 2 is $$attribute+2$$.
+  @var=@@var@@ <br>
+  @var=@@var@@@@bye@@
+  to print:@@var@@
+  print
+\ENDMACRO
+  \end{lstlisting} 
+\normalsize
+then when you run the \textsf{printTextVariable} macro, your display is going to show this message:
+\vspace{5px}
+
+\textsf{the attribute's value is 5. And the attribute's value plus 2 is 7. \\
+Good bye!}
+
+\end{ex}
+
+\subsection{Write/get text from an user's input}
+
+We can get text from the user as we do from declarations via \textsf{\$\$ ... \$\$} or from text variables via \textsf{@@ ... @@}. To do that we use this syntax:
+\begin{center} \textsf{@?\textsc{\scriptsize[MESSAGE TO SHOW]}@@} \end{center}
+
+Then a window with the message \textsc{\scriptsize[MESSAGE TO SHOW]} opens and the user can write text.
+
+\begin{ex}
+  \begin{lstlisting}
+\MACRO: printInputText
+  @s=@?Give me some text@@
+  to print:The input text is:@@s@@
+  print
+\ENDMACRO
+  \end{lstlisting} 
+\end{ex}
+\begin{ex}
+  \begin{lstlisting}
+\MACRO: printAttributeTable
+  @s=@?Give me the attribute to show@@
+  ?@s
+  print
+\ENDMACRO
+  \end{lstlisting} 
+\end{ex}
+
+\section{\textsf{execute}}
+
+We can execute a macro from another macro. To do that we use this syntax:
+\begin{center} \textsf{execute \textsc{\scriptsize[MACRO'S NAME]}} \end{center}
+
+\begin{ex} Suppose that we have this lines in a \textit{.csheet} file:
+  \begin{lstlisting}
+\MACRO: printAttacks
+  execute attack1text
+  execute attack2text
+  execute attack3text
+  print
+\ENDMACRO
+
+\MACRO: attack1text
+  to print:This is the attack 1 <br>
+\ENDMACRO
+
+\MACRO: attack2text
+  to print:This is the attack 2 <br>
+\ENDMACRO
+
+\MACRO: attack3text
+  to print:This is the attack 3 <br>
+\ENDMACRO
+  \end{lstlisting}
+then when we execute the \textsf{printAttacks} macro, the display is going to show something like: \vspace{5px} \\
+\textsf{This is the attack 1 \\
+This is the attack 2 \\
+This is the attack 3 \\}
+\end{ex}
+
+\subsection{Where the variables live}
+
+When we execute a macro (\textit{child macro}) from another macro (\textit{mother macro}), we CAN NOT use or modify the variables of the \textit{mother macro} using instructions in the \textit{child macro}. 
+
+\begin{ex} Suppose that we have these lines in a \textit{.csheet} file:
+  \begin{lstlisting}
+\MACRO: motherMacro
+  !var = 10
+  execute childMacro
+  to print:the variable's value is $$!var$$.
+  print
+\ENDMACRO
+
+\MACRO: childMacro
+  !var = 5
+\ENDMACRO
+  \end{lstlisting}
+then when we execute the \textsf{motherMacro} macro, the display is going to show something like:
+\vspace{5px}
+
+\textsf{the variable's value is 10.} \\
+  
+\end{ex}
+
+This is useful because we can execute a macro without being worried that there may be variables with the same name. However, sometimes we want to use the variables of the \textit{mother macro} from the \textit{child macro} or we want to use the variables of the \textit{child macro} from the \textit{mother macro} when the \textit{child} finish. To do that we use the \textsf{import} and \textit{export} instructions.
+
+\subsection{\textsf{import}}
+
+We can import a variable from the macro which has executed the current macro (\textit{mother macro}) to the current macro (\textit{child macro}). To do that we use this syntax:
+\begin{center} \textsf{import \textsc{\scriptsize[VARIABLE'S NAME]}} \end{center}
+
+\begin{ex} Suppose that we have these lines in a \textit{.csheet} file:
+  \begin{lstlisting}
+\MACRO: motherMacro
+  !var = 10
+  execute childMacro
+  print
+\ENDMACRO
+
+\MACRO: childMacro
+  import var
+  to print:the variable's value is $$!var$$.
+\ENDMACRO
+  \end{lstlisting}
+then when we execute the \textsf{motherMacro} macro, the display is going to show something like:
+\vspace{5px}
+
+When we import a variable with the \textsf{import} instruction and there are variables of different types with the same name, i.e., a text variable and a numerical variable with the same name, then all variables are imported. You can see the example of the \textsf{copy} instruction which follows the same behavior.
+
+\textsf{the variable's value is 10.} \\
+\end{ex}
+
+\subsection{\textsf{export}}
+
+We can export a variable from the current macro (\textit{child macro}) to the macro which has executed the current macro (\textit{mother macro}). To do that we use this syntax:
+\begin{center} \textsf{export \textsc{\scriptsize[VARIABLE'S NAME]}} \end{center}
+
+\begin{ex} Suppose that we have these lines in a \textit{.csheet} file:
+  \begin{lstlisting}
+\MACRO: motherMacro
+  !var = 10
+  execute childMacro
+  to print:the variable's value is $$!var$$.
+  print
+\ENDMACRO
+
+\MACRO: childMacro
+  !var = 5
+  export var
+\ENDMACRO
+  \end{lstlisting}
+then when we execute the \textsf{motherMacro} macro, the display is going to show something like:
+\vspace{5px}
+
+\textsf{the variable's value is 5.}
+  
+\end{ex}
+
+When we export a variable with the \textsf{export} instruction and there are variables of different types with the same name, i.e., a text variable and a numerical variable with the same name, then all variables are exported. You can see the example of the \textsf{copy} instruction which follows the same behavior.
+
+\subsection{\textsf{execute ... \textbackslash with}}
+We can add some instructions to execute at the begining of a macro (\textit{child macro}) when we execute it from another macro (\textit{mother macro}). To do that we use this syntax:
+\vspace{5px}\\
+\textsf{execute \textsc{\scriptsize[MACRO'S NAME]} \textbackslash with} \\
+\textsc{\scriptsize[INSTRUCTIONS]} \\
+\textsf{\textbackslash end} \\
+
+This is useful, for example, when we want to import variables from the \textit{mother macro}.
+
+\begin{ex} Suppose that we have these lines in a \textit{.csheet} file:
+  \begin{lstlisting}
+\MACRO: motherMacro
+  !var = 10
+  execute childMacro \with
+    import var
+    !valueToPrint = !var
+  \end
+\ENDMACRO
+
+\MACRO: childMacro
+  to print:the value is $$!valueToPrint$$.
+  print
+\ENDMACRO
+  \end{lstlisting}
+then when we execute the \textsf{motherMacro} macro, the display is going to show something like:
+\vspace{5px}
+
+\textsf{the value is 10.}
+  
+\end{ex}
+
+\subsection{\textsf{set default value of}}
+
+We can set a default value of a variable. When we do that, this instruction creates this variable with the specified value IF THE VARIABLE DOES NOT EXISTS. If the variable exists then the system ignore this instruction. The syntax of this instruction is:
+\begin{center} \textsf{set default value of \textsc{\scriptsize[VARIABLE'S NAME]}: \textsc{\scriptsize[DECLARATION]}} \end{center}
+
+\begin{ex} Suppose that we have these lines in a \textit{.csheet} file:
+  \begin{lstlisting}
+\MACRO: motherMacro
+  !var = 10
+  execute childMacro \with
+    import var
+    !valueToPrint = !var
+  \end
+\ENDMACRO
+
+\MACRO: childMacro
+  !aux = 50
+  set default value of valueToPrint: !aux*2
+  to print:the value is $$!valueToPrint$$.
+  print
+\ENDMACRO
+  \end{lstlisting}
+then when we execute the \textsf{motherMacro} macro, the display is going to show something like:
+\vspace{5px}
+
+\textsf{the value is 10.}
+
+and if we execute the \textsf{childMacro} macro, the display is going to show something like:
+\vspace{5px}
+
+\textsf{the value is 100.}
+  
+\end{ex}
+
+
+\subsection{\textsf{set default text of}}
+
+We can set a default text of a text variable. When we do that, this instruction creates this text variable with the specified text IF THE TEXT VARIABLE DOES NOT EXISTS. If the text variable exists then the system ignore this instruction. The syntax of this instruction is:
+\begin{center} \textsf{set default text of \textsc{\scriptsize[TEXT VARIABLE'S NAME]}:\textsc{\scriptsize[TEXT]}} \end{center}
+
+\begin{ex} Suppose that we have these lines in a \textit{.csheet} file:
+  \begin{lstlisting}
+\MACRO: motherMacro
+  @var =mother text
+  execute childMacro \with
+    import var
+    @textToPrint =@@var@@
+  \end
+\ENDMACRO
+
+\MACRO: childMacro
+  set default text of textToPrint:child text
+  to print:the text is "@@textToPrint@@".
+  print
+\ENDMACRO
+  \end{lstlisting}
+then when we execute the \textsf{motherMacro} macro, the display is going to show something like:
+\vspace{5px}
+
+\textsf{the text is "mother text".}
+
+and if we execute the \textsf{childMacro} macro, the display is going to show something like:
+\vspace{5px}
+
+\textsf{the text is "child text".}
+  
+\end{ex}
+
+\subsection{\textsf{execute ... \textbackslash with dependent variables}}
+
+If you execute a macro (\textit{child macro}) with this instruction, then all variables of the \textit{mother macro} are going to be automatically imported and all variables that you create in the \textit{child macro} are going to be automatically exported. In fact, the instructions of the \textit{child macro} are going to be run in the \textit{mother macro}. The syntax of this instruction is:
+\begin{center} \textsf{execute \textsc{\scriptsize[MACRO'S NAME]} \textbackslash with dependent variables} \end{center}
+
+\begin{ex} Suppose that we have these lines in a \textit{.csheet} file:
+  \begin{lstlisting}
+\MACRO: motherMacro
+  !var = 10
+  execute childMacro \with dependent variables
+  to print:the value is $$!var$$.
+  print
+  \end
+\ENDMACRO
+
+\MACRO: childMacro
+  to print:the value is $$!var$$.
+  !var = 5
+\ENDMACRO
+  \end{lstlisting}
+then when we execute the \textsf{motherMacro} macro, the display is going to show something like:
+\vspace{5px}
+
+\textsf{the value is 10.\\
+the value is 5.}
+  
+\end{ex}
+
+\section{\textsf{if ... \textbackslash then}}
+
+You can use a conditional expression in your macros. The syntax is: \vspace{5px} \\
+\textsf{if \textsc{\scriptsize[CONDITION]} \textbackslash then} \\
+\textsc{\scriptsize[INSTRUCTIONS]} \\
+\textsf{\textbackslash end} \\
+
+To write the condition you have to use the same syntax that we use in the \textsf{if} parameter (\ref{conditionSyntax}).
+
+\begin{ex} Suppose that we have these lines in a \textit{.csheet} file:
+  \begin{lstlisting}
+attribute: 5
+\MACRO: ifMacro
+  !var = 2
+  if attribute + !var > 6 \then
+    to print:attribute plus 2 is more than 6.
+  \end
+  if attribute + !var <= 6 \then
+    to print:attribute plus 2 is less or equal to 6. 
+  \end
+  print
+\ENDMACRO
+  \end{lstlisting}
+then when we execute the \textsf{ifMacro} macro, the display is going to show something like:
+\vspace{5px}
+
+\textsf{attribute plus 2 is more than 6.}
+
+\end{ex}
+
+\subsection{\textsf{if ... else ...}}
+
+You can use a conditional expression with an \textsf{else} expression in your macros. The syntax is: \vspace{5px} \\
+\textsf{if \textsc{\scriptsize[CONDITION]} \textbackslash then} \\
+\textsc{\scriptsize[INSTRUCTIONS]} \\
+\textsf{\textbackslash end else} \\
+\textsc{\scriptsize[INSTRUCTIONS]} \\
+\textsf{\textbackslash end} \\
+
+\begin{ex} Suppose that we have these lines in a \textit{.csheet} file:
+  \begin{lstlisting}
+attribute: 4
+\MACRO: ifElseMacro
+  !var = 2
+  if attribute + !var > 6 \then
+    to print:attribute plus 2 is more than 6.
+  \end else
+    to print:attribute plus 2 is less or equal to 6. 
+  \end
+  print
+\ENDMACRO
+  \end{lstlisting}
+then when we execute the \textsf{ifElseMacro} macro, the display is going to show something like:
+\vspace{5px}
+
+\textsf{attribute plus 2 is less or equal to 6.}
+
+\end{ex}
+
+\section{Loops}
+
+\subsection{\textsf{while ... \textbackslash do}}
+
+The syntax to use a \textsf{while} structure in your macros is: \vspace{5px} \\
+\textsf{while \textsc{\scriptsize[CONDITION]} \textbackslash do} \\
+\textsc{\scriptsize[INSTRUCTIONS]} \\
+\textsf{\textbackslash end} \\
+
+\begin{ex} Suppose that we have these lines in a \textit{.csheet} file:
+  \begin{lstlisting}
+\MACRO: whileMacro
+  !var = 0
+  !nDice = 0
+  while !var < 200 \do
+   !var = !var + %1d6
+   !nDice = !nDice + 1
+  \end
+  to print: we have needed $$!nDice$$ dice of 6 sides to sum 200.
+  print
+\ENDMACRO
+  \end{lstlisting}
+then when we execute the \textsf{whileMacro} macro, the display is going to show something like:
+\vspace{5px}
+
+\textsf{we have needed 57 dice of 6 sides to sum 200.} \\
+
+where 57 can change depending on the dice results.
+
+\end{ex}
+
+\subsection{\textsf{for ... \textbackslash from ... \textbackslash to ... \textbackslash do}}
+
+We can use a \textsf{for} instruction to iterate over integers. The syntax to do that is: \vspace{5px} \\
+\textsf{for \textsc{\scriptsize[VARIABLE'S NAME]} \textbackslash from \textsc{\scriptsize[FIRST INTEGER DECLARATION]} \textbackslash to \textsc{\scriptsize[LAST INTEGER DEC.]} \textbackslash do} \\
+\textsc{\scriptsize[INSTRUCTIONS]} \\
+\textsf{\textbackslash end} \\
+
+\begin{ex} Suppose that we have these lines in a \textit{.csheet} file:
+  \begin{lstlisting}
+level : 5
+\MACRO: forMacro
+  new array diceResults
+  for i \from 1 \to level + 1 \do
+    !dice = %1d6
+    to print:Die number $$!i$$ is equal to $$!dice$$. <br>
+    array-add !dice \to diceResults
+  \end
+  sum  diceResults \to aux
+  to print:SUM = $$!aux$$ <br>
+  min  diceResults \to aux
+  to print:MIN = $$!aux$$ <br>
+  max  diceResults \to aux
+  to print:MAX = $$!aux$$ <br>
+  sort diceResults \to diceResultsSorted
+  to print:sorted results:
+  length of diceResultsSorted \to n
+  for i \from 0 \to !n-1 \do
+    to print: $$!(!i)diceResultsSorted$$
+  \end
+  print
+\ENDMACRO
+  \end{lstlisting}
+then when we execute the \textsf{forMacro} macro, the display is going to show something like:
+\vspace{5px}
+
+\textsf{Die number 1 is equal to 5.\\
+Die number 2 is equal to 2.\\
+Die number 3 is equal to 6.\\
+Die number 4 is equal to 5.\\
+Die number 5 is equal to 3.\\
+Die number 6 is equal to 4.\\
+SUM = 25\\
+MIN = 2\\
+MAX = 6\\
+sorted results: 2 3 4 5 5 6} \\
+
+where the numbers can change depending on the dice results.
+
+\end{ex}
+
+\subsection{\textsf{for ... \textbackslash in ... \textbackslash do}}
+
+We can use a \textsf{for} instruction to iterate over the elements of an array. The syntax to do that is: \vspace{5px} \\
+\textsf{for \textsc{\scriptsize[VARIABLE'S NAME]} \textbackslash in \textsc{\scriptsize[ARRAY'S NAME]} \textbackslash do} \\
+\textsc{\scriptsize[INSTRUCTIONS]} \\
+\textsf{\textbackslash end} \\
+
+\begin{ex} Suppose that we have these lines in a \textit{.csheet} file:
+  \begin{lstlisting}
+level : 5
+\MACRO: forMacro
+  new array diceResults
+  for i \from 1 \to level + 1 \do
+    !dice = %1d6
+    to print:Die number $$!i$$ is equal to $$!dice$$. <br>
+    array-add !dice \to diceResults
+  \end
+  sort diceResults \to diceResultsSorted
+  to print:sorted results:
+  for dieResult \in diceResultsSorted \do
+    to print: $$!dieResult$$
+  \end
+  print
+\ENDMACRO
+  \end{lstlisting}
+then when we execute the \textsf{forMacro} macro, the display is going to show something like:
+\vspace{5px}
+
+\textsf{Die number 1 is equal to 1.\\
+Die number 2 is equal to 4.\\
+Die number 3 is equal to 2.\\
+Die number 4 is equal to 1.\\
+Die number 5 is equal to 1.\\
+Die number 6 is equal to 3.\\
+sorted results: 1 1 1 2 3 4} \\
+
+where the numbers can change depending on the dice results.
+
+\end{ex}
+
+We can also iterate \textsf{text arrays}.
+
+\begin{ex} Suppose that we have these lines in a \textit{.csheet} file:
+  \begin{lstlisting}
+level : 5
+\MACRO: forMacro
+  new text-array diceString
+  for i \from 1 \to level + 1 \do
+    !dice = %1d6
+    text-array-add the die number $$!i$$ is equal to $$!dice$$\to diceString
+  \end
+  for str \in diceString \do
+    to print: @@str@@ <br>
+  \end
+  print
+\ENDMACRO
+  \end{lstlisting}
+then when we execute the \textsf{forMacro} macro, the display is going to show something like:
+\vspace{5px}
+
+\textsf{the die number 1 is equal to 1\\
+the die number 2 is equal to 4\\
+the die number 3 is equal to 3\\
+the die number 4 is equal to 1\\
+the die number 5 is equal to 3\\
+the die number 6 is equal to 6} \\
+
+where the numbers can change depending on the dice results.
+
+However, if we have a \textsf{numerical array} and a \textsf{text array} with the same name, then this \textsf{for} instruction is going to iterate the \textsf{NUMERICAL array}.
+
+\end{ex}
+
+\section{Enable and disable files}
+
+We can enable or disable files according to a \textit{pattern} using the \textsf{enable} and \textsf{disable} instructions.
+
+\subsection{\textsf{enable}} \label{enableInstruction}
+
+The syntax to enable files is:
+\begin{center} \textsf{enable \textsc{\scriptsize [PATTERN]}} \end{center}
+
+Where the \textsc{\scriptsize[PATTERN]} can not have spaces (blanks). For this reason we recommend not to use spaces in the \textit{.csheet} file names.
+
+\begin{ex} Suppose that we have this files in a CodeSheet:
+  \begin{itemize} 
+    \item \textit{sword.weapon.csheet}
+    \item \textit{longsword.weapon.csheet}
+    \item \textit{axe.weapon.csheet}
+    \item \textit{stats.csheet}
+  \end{itemize}
+then when we run:
+    \begin{itemize}
+      \item \textsf{enable weapon} \\
+      the files:
+        \begin{itemize}
+          \item \textit{sword.weapon.csheet}
+          \item \textit{longsword.weapon.csheet}
+          \item \textit{axe.weapon.csheet}
+        \end{itemize}
+      are going to be enabled.
+      \item \textsf{enable sword.weapon.csheet} \\
+      the files:
+        \begin{itemize}
+          \item \textit{sword.weapon.csheet}
+          \item \textit{longsword.weapon.csheet}
+        \end{itemize}
+      are going to be enabled.
+      \item \textsf{enable longsword.weapon.csheet} \\
+      the file:
+        \begin{itemize}
+          \item \textit{longsword.weapon.csheet}
+        \end{itemize}
+      is going to be enabled.
+      \item \textsf{enable .csheet} \\
+      all files are going to be enabled.
+  \end{itemize}
+\end{ex}
+
+\begin{ex}
+  \begin{lstlisting}
+\MACRO: enableWeapon
+  @name=@?Give the name of the weapon that you want to enable@@.weapon
+  enable @name
+\ENDMACRO
+  \end{lstlisting}
+\end{ex}
+
+\subsection{\textsf{disable}}
+
+The syntax to disable files is:
+\begin{center} \textsf{disable \textsc{\scriptsize [PATTERN]}} \end{center}
+Where the \textsc{\scriptsize[PATTERN]} can not have spaces (blanks). For this reason we recommend not to use spaces in the \textit{.csheet} file names.
+
+You can see the example of \textsf{enable} instruction (\ref{enableInstruction}) to see how \textit{patterns} work.
+
+\section{Counters}
+
+A counter is a special element of the CodeSheet software that you can use to modify more than one numerical variable with only one instruction. 
+
+You can do two things with a Counter:
+\begin{itemize}
+  \item Link a variable
+  \item Modify linked variables adding a declaration's value to all of them
+\end{itemize}
+
+To link a variable you have to use this syntax:
+\begin{center} \textsf{*\textsc{\scriptsize [COUNTER'S NAME]}:\textsc{\scriptsize [VARIABLE'S NAME]}} \end{center}
+
+To modify linked variables you have to use this syntax:
+\begin{center} \textsf{*\textsc{\scriptsize [COUNTER'S NAME]}=\textsc{\scriptsize [DECLARATION]}} \end{center}
+
+You can import and export counters as you can do with variables, using the import and export instructions.
+
+\begin{ex}
+  \begin{lstlisting} Suppose that we have these macro:
+\MACRO: counterExample
+  !var1=5
+  !var2=10
+  !var3=15
+  *counterA: var1
+  *counterA: var2
+  *counterB: var3
+  *counterA=2
+  *counterA=1
+  *counterB=-10
+  to print:var1=$$!var1$$<br>
+  to print:var2=$$!var2$$<br>
+  to print:var3=$$!var3$$<br>
+  print
+\ENDMACRO
+  \end{lstlisting}
+
+then when we execute the \textsf{counterExample} macro, the display is going to show something like:
+\vspace{5px}
+
+\textsf{var1=8 \\
+var2=13 \\
+var3=5} \\
+
+\end{ex}
+
+\begin{ex}
+\small
+  \begin{lstlisting}
+\MACRO: shieldOfFaith
+  to print: <p>*enabling spell.shieldOfFaith.csheet file ...</p>
+  enable spell.shieldOfFaith.csheet
+  to print: <p>*linking durationShieldOfFaith variable to roundCounter ...</p>
+  import roundCounter
+  # shield of faith lasts as many rounds as your level
+  !durationShieldOfFaith=level
+  *roundCounter:durationShieldOfFaith
+  export roundCounter
+  export durationShieldOfFaith
+  print
+\ENDMACRO
+
+\MACRO: mageArmor
+  to print: <p>*enabling spell.mageArmor.csheet file ...</p>
+  enable spell.mageArmor.csheet
+  to print: <p>*linking durationMageArmor variable to roundCounter ...</p>
+  import roundCounter
+  # mage armor lasts as many hours as your level (1h=60min and 1min=10rounds)
+  !durationMageArmor=level*60*10
+  *roundCounter:durationMageArmor
+  export roundCounter
+  export durationMageArmor
+  print
+\ENDMACRO
+
+## It MUST be executed "with depenedent variables"
+\MACRO: spendOneRound
+  to print: spending one round ...
+  *roundCounter=-1
+  print
+\ENDMACRO
+
+## It MUST be executed "with depenedent variables"
+\MACRO: spendRounds
+  !aux=\windowInput(How many rounds do you want to spend?)
+  *roundCounter=-!aux
+  to print: spending $$!aux$$ rounds ...
+  print
+\ENDMACRO
+  \end{lstlisting}
+\normalsize
+\end{ex}
+
+\subsection{\textsf{counter-del}}
+
+You can remove or disassociate a variable from a counter. To do that we use this syntax:
+\begin{center} \textsf{counter-del \textsc{\scriptsize [VARIABLES'S NAME]} \textbackslash of \textsc{\scriptsize [COUNTER'S NAME]}} \end{center}
+
+\begin{ex}
+  \begin{lstlisting}
+\MACRO: endMageArmor
+  to print: disabling spell.mageArmor.csheet file ...<br>
+  disable spell.mageArmor.csheet
+  to print: removing durationShieldOfFaith of roundCounter ...<br>
+  import roundCounter
+  counter-del durationMageArmor \of roundCounter
+  export roundCounter
+  print
+\ENDMACRO
+  \end{lstlisting}
+\end{ex}
+
+\section{\textsf{exit}}
+
+You can use this instruction to finish a macro immediately. The syntax is:
+\begin{center} \textsf{exit} \end{center}
+
+\begin{ex}
+  \begin{lstlisting}
+\MACRO: makingAttacks
+  while -1 < 1 \do
+    ?attack
+    print
+    !aux = \windowOption(do you want to do another attack?, yes:1, no:0 )
+    if !aux = 0 \then
+      exit
+    \end
+  \end
+\ENDMACRO
+  \end{lstlisting}
+\end{ex}
+
+\subsection{\textsf{exit} and returning a value} \label{exitInstructionReturningValue}
+
+You can return a value when you use the \textsf{exit} instruction in order to use a macro as a parameter (\ref{macroParameter}). The syntax is:
+\begin{center} \textsf{exit \textsc{\scriptsize [DECLARATION]}} \end{center}
+
+\begin{ex} 
+  \begin{lstlisting}
+attack: &highestTwoDice + 20
+
+\MACRO: highestTwoDice
+  new array arr
+  array-add %1d20 \to arr
+  array-add %1d20 \to arr
+  max arr \to return
+  exit !return
+\ENDMACRO
+  \end{lstlisting}
+\end{ex}
+
+\section{\textsf{set folder}}
+
+You can organize your macros in folders. To do that we use this syntax:
+\begin{center} \textsf{set folder: \textsc{\scriptsize [FOLDER'S NAME]}} \end{center}
+
+\begin{ex}
+  \begin{lstlisting}
+\MACRO: axeAttack
+  set folder: attacks
+  ?axeAttack
+  print
+  !aux = \windowOption(what happens?, hit:1, critic:2, no hit:0)
+  if !aux = 1 \then
+    ?axeDamage
+    print
+  \end
+  if !aux = 2 \then
+    ?axeCritAttack
+    print
+    !aux = \windowOption(is it a critic?, yes:1, no:0)
+    if !aux = 1 \then
+      ?axeCritDamage
+      print
+    \end else
+      ?axeDamage
+      print
+    \end
+  \end
+\ENDMACRO
+  \end{lstlisting}
+\end{ex}
+
+\section{Multiple declarations of the same macro}
+
+You can declare the same macro as many times as you want. When you execute a macro all declarations are going to be executed (if the corresponding file is enabled).
+
+\begin{ex} Suppose that we have these two files: 
+
+\hrulefill
+
+\begin{center}\textit{attacks.csheet} \end{center}
+  \begin{lstlisting}
+\MACRO: fullAttack
+  ?rightSwordAttack
+  ?rightSwordDamage
+  ?leftSwordAttack
+  ?leftSwordDamage
+\ENDMACRO
+  \end{lstlisting}  
+
+\hrulefill
+
+\begin{center} \textit{haste.csheet} \end{center}
+  \begin{lstlisting}
+\MACRO: fullAttack
+  ?rightSwordAttack
+  ?rightSwordDamage
+\ENDMACRO
+  \end{lstlisting}  
+
+\hrulefill
+
+then when we execute the \textsf{fullAttack} macro, 
+\begin{itemize}
+  \item if only \textit{attacks.csheet} is enabled, then these instructions are going to be executed:
+    \begin{lstlisting}
+?rightSwordAttack
+?rightSwordDamage
+?leftSwordAttack
+?leftSwordDamage
+    \end{lstlisting}
+  \item if both files are enabled, then these instructions are going to be executed:
+    \begin{lstlisting}
+?rightSwordAttack
+?rightSwordDamage
+?leftSwordAttack
+?leftSwordDamage
+?rightSwordAttack
+?rightSwordDamage
+    \end{lstlisting}
+\end{itemize}
+
+\end{ex}
+
+However, to know the order in which these instructions are going to be executed we have to use the \textsf{set order} instruction.
+
+\subsection{\textsf{set order}}
+
+We use this instruction to set the order in which different declarations of the same macro are going to be executed. The syntax is:
+\begin{center} \textsf{set order: \textsc{\scriptsize [DECLARATION]}} \end{center}
+
+It is important to stress that the order is set when the code sheet opens. Therefore, you should not use variables to set the order. In fact, we recommend to use only numerical values (although you can use attributes or other parameters if you want).
+
+The values should be integers. If you do not use integers, then the values are going to be rounded to the closest integer.
+
+The execution order will be according to the values you set from lowest to highest.
+
+\begin{ex} Suppose that we have these macro declarations: 
+  \begin{lstlisting}
+\MACRO: fullAttack
+  set order: 2
+  to print: normal attacks
+  ?rightSwordAttack
+  ?rightSwordDamage
+  ?leftSwordAttack
+  ?leftSwordDamage
+  print
+\ENDMACRO
+
+\MACRO: fullAttack
+  set order: 1
+  to print: haste attack
+  ?rightSwordAttack
+  ?rightSwordDamage
+  print
+\ENDMACRO
+  \end{lstlisting}  
+
+then when we execute the \textsf{fullAttack} macro, the instructions are going to be executed in these order
+\begin{lstlisting}
+  to print: haste attack
+  ?rightSwordAttack
+  ?rightSwordDamage
+  print
+  to print: normal attacks
+  ?rightSwordAttack
+  ?rightSwordDamage
+  ?leftSwordAttack
+  ?leftSwordDamage
+  print
+\end{lstlisting}
+
+\end{ex}
+
+EXPLICAR QUE ESTA COMPILADO CON JAVA 7 Y SE HA PROBADO EN WIN7 Y EN LINUX.
+
+\end{document}
+

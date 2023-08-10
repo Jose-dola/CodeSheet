@@ -1,0 +1,2 @@
+anyadir "show message:"
+anyadir "archivo de configuracion"

@@ -1,0 +1,101 @@
+\BOOKMARK [0][-]{chapter.1}{The sheet}{}% 1
+\BOOKMARK [1][-]{section.1.1}{Extensions and folders}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{Attributes}{chapter.1}% 3
+\BOOKMARK [2][-]{subsection.1.2.1}{Declarations}{section.1.2}% 4
+\BOOKMARK [3][-]{section*.2}{Bucles of declarations}{subsection.1.2.1}% 5
+\BOOKMARK [3][-]{section*.3}{Multiple declarations of an attribute}{subsection.1.2.1}% 6
+\BOOKMARK [1][-]{section.1.3}{Tables}{chapter.1}% 7
+\BOOKMARK [1][-]{section.1.4}{Macros}{chapter.1}% 8
+\BOOKMARK [1][-]{section.1.5}{Enable and disable .csheet files}{chapter.1}% 9
+\BOOKMARK [2][-]{subsection.1.5.1}{\134ALWAYS ENABLED}{section.1.5}% 10
+\BOOKMARK [1][-]{section.1.6}{Comment lines}{chapter.1}% 11
+\BOOKMARK [1][-]{section.1.7}{Broken lines}{chapter.1}% 12
+\BOOKMARK [0][-]{chapter.2}{Parameters}{}% 13
+\BOOKMARK [1][-]{section.2.1}{Attributes}{chapter.2}% 14
+\BOOKMARK [1][-]{section.2.2}{Numbers}{chapter.2}% 15
+\BOOKMARK [1][-]{section.2.3}{Dice rolls}{chapter.2}% 16
+\BOOKMARK [2][-]{subsection.2.3.1}{Dice rolls' messages}{section.2.3}% 17
+\BOOKMARK [2][-]{subsection.2.3.2}{Dice rolls' labels}{section.2.3}% 18
+\BOOKMARK [2][-]{subsection.2.3.3}{What to do to avoid the system printing of dice rolls' results}{section.2.3}% 19
+\BOOKMARK [1][-]{section.2.4}{Variables}{chapter.2}% 20
+\BOOKMARK [1][-]{section.2.5}{\134min\(\) and \134max\(\)}{chapter.2}% 21
+\BOOKMARK [1][-]{section.2.6}{Macro's return}{chapter.2}% 22
+\BOOKMARK [2][-]{subsection.2.6.1}{Set of instructions' return}{section.2.6}% 23
+\BOOKMARK [1][-]{section.2.7}{\134windowInput\(\)}{chapter.2}% 24
+\BOOKMARK [1][-]{section.2.8}{\134windowOption\(\)}{chapter.2}% 25
+\BOOKMARK [1][-]{section.2.9}{\134windowOptionList\(\)}{chapter.2}% 26
+\BOOKMARK [1][-]{section.2.10}{\134if\(\)\(\)}{chapter.2}% 27
+\BOOKMARK [2][-]{subsection.2.10.1}{Condition's syntax}{section.2.10}% 28
+\BOOKMARK [3][-]{section*.4}{isEnable\([FILES PATTERN]\)}{subsection.2.10.1}% 29
+\BOOKMARK [1][-]{section.2.11}{Tables}{chapter.2}% 30
+\BOOKMARK [2][-]{subsection.2.11.1}{Table's conditions}{section.2.11}% 31
+\BOOKMARK [2][-]{subsection.2.11.2}{How to write a table in your sheet}{section.2.11}% 32
+\BOOKMARK [3][-]{section*.5}{Create a .ctable file}{subsection.2.11.2}% 33
+\BOOKMARK [3][-]{section*.6}{Table declaration inside a .csheet file}{subsection.2.11.2}% 34
+\BOOKMARK [2][-]{subsection.2.11.3}{How to call a table as a parameter}{section.2.11}% 35
+\BOOKMARK [1][-]{section.2.12}{Parameter's options}{chapter.2}% 36
+\BOOKMARK [2][-]{subsection.2.12.1}{Create a variable with parameter's value}{section.2.12}% 37
+\BOOKMARK [2][-]{subsection.2.12.2}{Attribute's tables}{section.2.12}% 38
+\BOOKMARK [3][-]{section*.7}{Paramenter's labels}{subsection.2.12.2}% 39
+\BOOKMARK [3][-]{section*.8}{Attribute labels}{subsection.2.12.2}% 40
+\BOOKMARK [3][-]{section*.9}{Using ? to make tables recursively}{subsection.2.12.2}% 41
+\BOOKMARK [3][-]{section*.10}{Calling an attribute's table}{subsection.2.12.2}% 42
+\BOOKMARK [2][-]{subsection.2.12.3}{Labels and variable creation. Both options in the same parameter}{section.2.12}% 43
+\BOOKMARK [1][-]{section.2.13}{Multiplications and divisions}{chapter.2}% 44
+\BOOKMARK [2][-]{subsection.2.13.1}{Parenthesis}{section.2.13}% 45
+\BOOKMARK [0][-]{chapter.3}{Macros}{}% 46
+\BOOKMARK [1][-]{section.3.1}{Variables}{chapter.3}% 47
+\BOOKMARK [2][-]{subsection.3.1.1}{Array Positions}{section.3.1}% 48
+\BOOKMARK [2][-]{subsection.3.1.2}{Numerical variables}{section.3.1}% 49
+\BOOKMARK [2][-]{subsection.3.1.3}{Numerical arrays}{section.3.1}% 50
+\BOOKMARK [3][-]{section*.11}{Create arrays}{subsection.3.1.3}% 51
+\BOOKMARK [3][-]{section*.12}{Add value}{subsection.3.1.3}% 52
+\BOOKMARK [3][-]{section*.13}{Delete array element}{subsection.3.1.3}% 53
+\BOOKMARK [3][-]{section*.14}{Sort an array}{subsection.3.1.3}% 54
+\BOOKMARK [3][-]{section*.15}{Assign to a variable the sum, the minimum or the maximum value of a numerical array}{subsection.3.1.3}% 55
+\BOOKMARK [3][-]{section*.16}{Use array element as a variable}{subsection.3.1.3}% 56
+\BOOKMARK [2][-]{subsection.3.1.4}{Text variables}{section.3.1}% 57
+\BOOKMARK [2][-]{subsection.3.1.5}{Text arrays}{section.3.1}% 58
+\BOOKMARK [3][-]{section*.17}{Create text arrays}{subsection.3.1.5}% 59
+\BOOKMARK [3][-]{section*.18}{Add text element}{subsection.3.1.5}% 60
+\BOOKMARK [3][-]{section*.19}{Delete text array element}{subsection.3.1.5}% 61
+\BOOKMARK [3][-]{section*.20}{Change an existing text array element}{subsection.3.1.5}% 62
+\BOOKMARK [2][-]{subsection.3.1.6}{Assign to a variable the length of an array}{section.3.1}% 63
+\BOOKMARK [2][-]{subsection.3.1.7}{copy}{section.3.1}% 64
+\BOOKMARK [1][-]{section.3.2}{Print}{chapter.3}% 65
+\BOOKMARK [2][-]{subsection.3.2.1}{HTML}{section.3.2}% 66
+\BOOKMARK [2][-]{subsection.3.2.2}{print buffer}{section.3.2}% 67
+\BOOKMARK [2][-]{subsection.3.2.3}{to print}{section.3.2}% 68
+\BOOKMARK [2][-]{subsection.3.2.4}{print}{section.3.2}% 69
+\BOOKMARK [2][-]{subsection.3.2.5}{to print lines}{section.3.2}% 70
+\BOOKMARK [2][-]{subsection.3.2.6}{to print with line breaks}{section.3.2}% 71
+\BOOKMARK [2][-]{subsection.3.2.7}{to print files matching with}{section.3.2}% 72
+\BOOKMARK [2][-]{subsection.3.2.8}{Print attribute's table}{section.3.2}% 73
+\BOOKMARK [3][-]{section*.21}{Print attribute's table and store the attribute's value in a variable}{subsection.3.2.8}% 74
+\BOOKMARK [2][-]{subsection.3.2.9}{Write/get numerical variables and declarations' values}{section.3.2}% 75
+\BOOKMARK [2][-]{subsection.3.2.10}{Write/get text variables}{section.3.2}% 76
+\BOOKMARK [2][-]{subsection.3.2.11}{Write/get text from an user's input}{section.3.2}% 77
+\BOOKMARK [1][-]{section.3.3}{execute}{chapter.3}% 78
+\BOOKMARK [2][-]{subsection.3.3.1}{Where the variables live}{section.3.3}% 79
+\BOOKMARK [2][-]{subsection.3.3.2}{import}{section.3.3}% 80
+\BOOKMARK [2][-]{subsection.3.3.3}{export}{section.3.3}% 81
+\BOOKMARK [2][-]{subsection.3.3.4}{execute ... \134with}{section.3.3}% 82
+\BOOKMARK [2][-]{subsection.3.3.5}{set default value of}{section.3.3}% 83
+\BOOKMARK [2][-]{subsection.3.3.6}{set default text of}{section.3.3}% 84
+\BOOKMARK [2][-]{subsection.3.3.7}{execute ... \134with dependent variables}{section.3.3}% 85
+\BOOKMARK [1][-]{section.3.4}{if ... \134then}{chapter.3}% 86
+\BOOKMARK [2][-]{subsection.3.4.1}{if ... else ...}{section.3.4}% 87
+\BOOKMARK [1][-]{section.3.5}{Loops}{chapter.3}% 88
+\BOOKMARK [2][-]{subsection.3.5.1}{while ... \134do}{section.3.5}% 89
+\BOOKMARK [2][-]{subsection.3.5.2}{for ... \134from ... \134to ... \134do}{section.3.5}% 90
+\BOOKMARK [2][-]{subsection.3.5.3}{for ... \134in ... \134do}{section.3.5}% 91
+\BOOKMARK [1][-]{section.3.6}{Enable and disable files}{chapter.3}% 92
+\BOOKMARK [2][-]{subsection.3.6.1}{enable}{section.3.6}% 93
+\BOOKMARK [2][-]{subsection.3.6.2}{disable}{section.3.6}% 94
+\BOOKMARK [1][-]{section.3.7}{Counters}{chapter.3}% 95
+\BOOKMARK [2][-]{subsection.3.7.1}{counter-del}{section.3.7}% 96
+\BOOKMARK [1][-]{section.3.8}{exit}{chapter.3}% 97
+\BOOKMARK [2][-]{subsection.3.8.1}{exit and returning a value}{section.3.8}% 98
+\BOOKMARK [1][-]{section.3.9}{set folder}{chapter.3}% 99
+\BOOKMARK [1][-]{section.3.10}{Multiple declarations of the same macro}{chapter.3}% 100
+\BOOKMARK [2][-]{subsection.3.10.1}{set order}{section.3.10}% 101
